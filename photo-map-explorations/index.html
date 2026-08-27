@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>个人地图 · 交互探索</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="hologram.css" />
+    <link rel="stylesheet" href="painting.css" />
+    <link rel="stylesheet" href="parcel.css" />
+    <link rel="stylesheet" href="prism.css" />
+    <link rel="stylesheet" href="prism-sequence.css" />
+    <link rel="stylesheet" href="magic.css" />
+    <link rel="stylesheet" href="magic-sequence.css" />
+    <link rel="stylesheet" href="summon-ritual.css" />
+    <link rel="stylesheet" href="summon-tone.css" />
+    <link rel="stylesheet" href="door.css" />
+  </head>
+  <body>
+    <main class="phone-shell" aria-label="个人地图交互探索">
+      <section class="screen debug-menu" id="debug-menu">
+        <p class="eyebrow">PERSONAL MAP / LAB</p>
+        <h1>调试菜单</h1>
+        <p class="intro">世界送来一座教堂，<br />落在你的城市里。</p>
+        <button class="experiment-card" id="open-experiment">
+          <span class="experiment-number">01</span>
+          <span><b>空降快递</b><small>拍下教堂，把它寄往你的地图</small></span>
+          <i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-light" id="open-scanner">
+          <span class="experiment-number">02</span>
+          <span><b>景色扫描</b><small>扫描一片景色，让它浮现在地图上</small></span>
+          <i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-paint" id="open-painting">
+          <span class="experiment-number">03</span>
+          <span><b>画框传递</b><small>把景色交给地图上的小画家</small></span>
+          <i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-prism" id="open-prism">
+          <span class="experiment-number">04</span>
+          <span><b>棱镜海市蜃楼</b><small>将照片里的光，折射到地图上</small></span>
+          <i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-magic" id="open-magic">
+          <span class="experiment-number">05</span>
+          <span><b>魔法召唤</b><small>让主体穿过法阵，抵达地图</small></span>
+          <i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-door" id="open-door">
+          <span class="experiment-number">06</span>
+          <span><b>任意门</b><small>把主体推入另一扇门，再送到地图</small></span>
+          <i>↗</i>
+        </button>
+        <p class="menu-note">一个入口 · 两个页面 · 一段抵达</p>
+      </section>
+
+      <section class="screen camera-screen is-hidden" id="camera-screen">
+        <header class="camera-topbar"><button class="round-button back" aria-label="返回菜单">←</button><span>此刻</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="viewfinder" id="viewfinder">
+          <div class="photo-scene" aria-label="教堂拍摄画面"><img src="assets/church.jpg" alt="用户拍摄的教堂" /></div>
+          <div class="focus-frame church-focus" id="focus-frame"><span></span><b>识别到：教堂主体</b></div>
+          <div class="freeze-flash"></div>
+          <div class="packing-layer" id="packing-layer">
+            <p>正在为教堂打包快递</p>
+            <div class="mini-parcel"><span class="parcel-tape"></span><span class="parcel-label">TO: 我的地图<br />CHURCH / 01</span><div class="parcel-subject church-subject"></div></div>
+          </div>
+        </div>
+        <div class="camera-bottom">
+          <p id="camera-hint">框住想留下的主体</p>
+          <button class="shutter" id="shutter" aria-label="拍照"><i></i></button>
+          <button class="send-button is-hidden" id="send-map">送往地图 <span>→</span></button>
+        </div>
+      </section>
+
+      <section class="screen map-screen is-hidden" id="map-screen">
+        <header class="map-topbar"><button class="round-button map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一个快递包裹正在抵达</b></div><button class="round-button replay" aria-label="重播">↻</button></header>
+        <div class="map-world" id="map-world">
+          <div class="river river-one"></div><div class="river river-two"></div>
+          <div class="road road-main"></div><div class="road road-branch branch-a"></div><div class="road road-branch branch-b"></div>
+          <div class="district district-one">北园</div><div class="district district-two">河岸</div><div class="district district-three">我常走的路</div>
+          <div class="drop-shadow"></div>
+          <div class="airdrop" id="airdrop">
+            <div class="parachute"><span></span><span></span><span></span><i></i></div>
+            <div class="strings"><i></i><i></i><i></i></div>
+            <div class="parcel-box"><span class="parcel-tape"></span><span class="parcel-label">MAP<br />DELIVERY</span></div>
+          </div>
+          <div class="surprise" id="surprise"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="map-church" id="map-church"><img src="assets/church.jpg" alt="留在地图上的教堂" /></div>
+          <p class="arrival-copy" id="arrival-copy">从三维世界，带来一座教堂</p>
+        </div>
+        <footer class="map-footer"><span></span>不是地点的标记，是城市给你的回应</footer>
+      </section>
+
+      <section class="screen scanner-screen is-hidden" id="scanner-screen">
+        <header class="scanner-topbar"><button class="round-button scanner-back" aria-label="返回菜单">←</button><span>SCENE SCANNER</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="scanner-view" id="scanner-view">
+          <img src="assets/church.jpg" alt="正在扫描的教堂与周边景色" />
+          <div class="scan-grid"></div><div class="scan-line"></div>
+          <div class="scanner-corners"><i></i><i></i><i></i><i></i></div>
+          <div class="scanner-readout"><span>景色范围</span><b>CHURCH / SQUARE / TREES</b></div>
+          <div class="scanner-result"><span>SCENE CAPTURED</span><b>这一片景色已被折叠</b></div>
+        </div>
+        <div class="scanner-bottom"><p id="scanner-hint">将景色置于扫描区域内</p><button class="scan-button" id="scan-button"><i></i><span>开始扫描</span></button><button class="reveal-button is-hidden" id="reveal-button">在地图上展开 <span>→</span></button></div>
+      </section>
+
+      <section class="screen reveal-map-screen is-hidden" id="reveal-map-screen">
+        <header class="reveal-topbar"><button class="round-button reveal-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一片景色正在浮现</b></div><button class="round-button reveal-replay" aria-label="重播">↻</button></header>
+        <div class="reveal-world" id="reveal-world">
+          <div class="reveal-river"></div><div class="reveal-road reveal-main-road"></div><div class="reveal-road reveal-cross-road"></div>
+          <span class="reveal-label label-north">北园</span><span class="reveal-label label-square">广场</span><span class="reveal-label label-river">河岸</span>
+          <div class="holo-projector"><i></i><span></span></div><div class="holo-beam"></div>
+          <div class="scene-rings"><i></i><i></i><i></i></div>
+          <div class="scene-slice"><img src="assets/church.jpg" alt="从全息投影中浮现的教堂广场景色" /><span class="slice-edge"></span><span class="holo-lines"></span><b class="holo-data">SCENE / 01<br />RECONSTRUCTING</b></div>
+          <div class="scan-spark"><i></i><i></i><i></i><i></i></div>
+          <p class="reveal-copy">投影散去，建筑留在地图上</p>
+        </div>
+        <footer class="reveal-footer"><span></span>不是标记地点，而是让地点重新显现</footer>
+      </section>
+
+      <section class="screen painting-screen is-hidden" id="painting-screen">
+        <header class="painting-topbar"><button class="round-button painting-back" aria-label="返回菜单">←</button><span>FRAME / MOMENT</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="painting-room">
+          <div class="picture-frame"><div class="frame-mat"><img src="assets/church.jpg" alt="画框里的教堂景色" /></div><i class="frame-shine"></i></div>
+          <div class="frame-caption"><span>一帧景色</span><b>把这座教堂交给小画家</b></div>
+          <div class="frame-stamp">OBSERVED<br />TODAY</div>
+          <div class="frame-transfer"><i></i><i></i><i></i></div>
+        </div>
+        <div class="painting-bottom"><p id="painting-hint">让景色先住进画框里</p><button class="frame-button" id="frame-button"><i></i><span>收进画框</span></button><button class="painter-send is-hidden" id="painter-send">交给小画家 <span>→</span></button></div>
+      </section>
+
+      <section class="screen painter-map-screen is-hidden" id="painter-map-screen">
+        <header class="painter-map-topbar"><button class="round-button painter-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>小画家正在作画</b></div><button class="round-button painter-replay" aria-label="重播">↻</button></header>
+        <div class="painter-world" id="painter-world">
+          <div class="paint-river"></div><div class="paint-road paint-main-road"></div><div class="paint-road paint-cross-road"></div>
+          <span class="paint-label label-one">北园</span><span class="paint-label label-two">河岸</span><span class="paint-label label-three">广场</span>
+          <div class="easel"><span></span><i></i></div>
+          <div class="little-painter"><div class="painter-hat"></div><div class="painter-head"></div><div class="painter-body"></div><div class="painter-arm"></div><div class="painter-brush"><i></i></div></div>
+          <svg class="painted-church" viewBox="0 0 210 255" aria-label="小画家画出的教堂">
+            <path class="paint-fill" d="M28 226V92h21V48h17V22h9v26h22v72h16V48h17V22h9v26h17v44h21v134H28Z" />
+            <path class="paint-line line-main" d="M28 226V92h21V48h17V22h9v26h22v72h16V48h17V22h9v26h17v44h21v134M28 226h149M49 48 72 20l25 28M113 48l22-28 21 28M97 120h16M81 226v-45c0-19 25-19 25 0v45M50 132h21v35H50m86-35h20v35h-20M59 75h10v28H59m78-28h10v28h-10" />
+            <path class="paint-line line-detail" d="M77 140h56M77 153h56M77 166h56M35 211h28m85 0h25M44 115h33m55 0h33" />
+            <circle class="paint-rose" cx="105" cy="103" r="13" />
+          </svg>
+          <div class="paint-splashes"><i></i><i></i><i></i><i></i></div>
+          <p class="painting-copy">一笔一笔，留下一座教堂</p>
+        </div>
+        <footer class="painter-footer"><span></span>景色被看见，也被重新画进地图</footer>
+      </section>
+
+      <section class="screen prism-screen is-hidden" id="prism-screen">
+        <header class="prism-topbar"><button class="round-button prism-back" aria-label="返回菜单">←</button><span>REFRACT / LIGHT</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="prism-view" id="prism-view"><div class="prism-photo"><img src="assets/church.jpg" alt="棱镜中的教堂照片" /><span>PHOTO / 01</span></div><div class="prism-object"><i></i><span></span></div><div class="prism-rays"><i></i><i></i><i></i></div><div class="light-sample"><span>LIGHT SAMPLE</span><b>从这一帧取一束光</b></div><div class="prism-done">LIGHT REFRACTED</div></div>
+        <div class="prism-bottom"><p id="prism-hint">让棱镜对准景色里的光</p><button class="prism-button" id="prism-button"><i></i><span>折射光线</span></button><button class="mirage-send is-hidden" id="mirage-send">投向地图 <span>→</span></button></div>
+      </section>
+
+      <section class="screen mirage-map-screen is-hidden" id="mirage-map-screen">
+        <header class="mirage-topbar"><button class="round-button mirage-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一束光正在抵达</b></div><button class="round-button mirage-replay" aria-label="重播">↻</button></header>
+        <div class="mirage-world" id="mirage-world"><div class="mirage-water"></div><div class="mirage-road mirage-road-main"></div><div class="mirage-road mirage-road-cross"></div><span class="mirage-label label-a">北园</span><span class="mirage-label label-b">广场</span><span class="mirage-label label-c">河岸</span><div class="map-prism"><i></i><span></span></div><div class="incoming-light"><i></i><i></i><i></i></div><div class="mirage-image"><img src="assets/church.jpg" alt="浮现在地图上的教堂海市蜃楼" /><span></span></div><div class="mirage-reflection"></div><p class="mirage-copy">照片里的光，在这里成为海市蜃楼</p></div>
+        <footer class="mirage-footer"><span></span>不是地图上的建筑，是一瞬间折射出的远方</footer>
+      </section>
+
+      <section class="screen magic-screen is-hidden" id="magic-screen">
+        <header class="magic-topbar"><button class="round-button magic-back" aria-label="返回菜单">←</button><span>ARCANE / CAPTURE</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="magic-view" id="magic-view"><div class="magic-photo"><img src="assets/church.jpg" alt="即将被魔法阵带走的教堂" /></div><div class="capture-circle"><i></i><i></i><i></i><span>✦</span></div><div class="spell-copy"><span>主体锁定</span><b>教堂正在穿过法阵</b></div><div class="vanish-sparks"><i></i><i></i><i></i><i></i></div></div>
+        <div class="magic-bottom"><p id="magic-hint">让魔法阵在景色背后显现</p><button class="magic-button" id="magic-button"><i>✦</i><span>启动法阵</span></button><button class="summon-send is-hidden" id="summon-send">前往召唤地点 <span>→</span></button></div>
+      </section>
+
+      <section class="screen summon-map-screen is-hidden" id="summon-map-screen">
+        <header class="summon-topbar"><button class="round-button summon-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>召唤仪式正在进行</b></div><button class="round-button summon-replay" aria-label="重播">↻</button></header>
+        <div class="summon-world" id="summon-world"><div class="summon-river"></div><div class="summon-road summon-road-main"></div><div class="summon-road summon-road-cross"></div><span class="summon-label summon-north">北园</span><span class="summon-label summon-square">广场</span><span class="summon-label summon-bank">河岸</span><div class="ground-circle"><i></i><i></i><i></i><span>✦</span></div><div class="wizard wizard-one"><i></i><span></span></div><div class="wizard wizard-two"><i></i><span></span></div><div class="wizard wizard-three"><i></i><span></span></div><div class="wizard wizard-four"><i></i><span></span></div><div class="summon-beam"></div><div class="summoned-church"><img src="assets/church.jpg" alt="从魔法阵中被召唤出来的教堂" /></div><div class="summon-sparks"><i></i><i></i><i></i><i></i><i></i></div><p class="summon-copy">教堂从另一个瞬间，被召唤到这里</p></div>
+        <footer class="summon-footer"><span></span>地图不是容器，它会回应你的注视</footer>
+      </section>
+
+      <section class="screen door-screen is-hidden" id="door-screen">
+        <header class="door-topbar"><button class="round-button door-back" aria-label="返回菜单">←</button><span>ANYWHERE / DOOR</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="door-view" id="door-view"><div class="door-scene"><img src="assets/church.jpg" alt="即将进入任意门的教堂" /></div><div class="any-door"><span class="door-knob"></span><i></i></div><div class="door-push-label">门的另一边，有人在等</div><div class="door-sparks"><i></i><i></i><i></i></div></div>
+        <div class="door-bottom"><p id="door-hint">选择一扇通往地图的门</p><button class="door-button" id="door-button"><i>↗</i><span>推入任意门</span></button><button class="door-send is-hidden" id="door-send">去地图另一边 <span>→</span></button></div>
+      </section>
+
+      <section class="screen anywhere-map-screen is-hidden" id="anywhere-map-screen">
+        <header class="anywhere-topbar"><button class="round-button anywhere-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>任意门正在打开</b></div><button class="round-button anywhere-replay" aria-label="重播">↻</button></header>
+        <div class="anywhere-world" id="anywhere-world"><div class="anywhere-river"></div><div class="anywhere-road anywhere-main-road"></div><div class="anywhere-road anywhere-cross-road"></div><span class="anywhere-label label-one">北园</span><span class="anywhere-label label-two">广场</span><span class="anywhere-label label-three">河岸</span><div class="map-door"><div class="door-surface"></div><span class="door-knob"></span></div><div class="door-pusher"><i></i><span></span><b></b></div><div class="pushed-church"><img src="assets/church.jpg" alt="被从任意门里推出的教堂" /></div><div class="push-lines"><i></i><i></i><i></i></div><p class="anywhere-copy">门消失了，但它把教堂留了下来</p></div>
+        <footer class="anywhere-footer"><span></span>有些抵达，不需要一条可解释的路</footer>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
