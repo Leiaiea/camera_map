@@ -42,6 +42,14 @@
     <link rel="stylesheet" href="eye-mirage.css" />
     <link rel="stylesheet" href="pen-drawing.css" />
     <link rel="stylesheet" href="debug-grid.css" />
+    <link rel="stylesheet" href="paper-plane.css" />
+    <link rel="stylesheet" href="mood-particles.css" />
+    <link rel="stylesheet" href="stamp-mail.css" />
+    <link rel="stylesheet" href="diamond-bird.css" />
+    <link rel="stylesheet" href="ant-scroll.css" />
+    <link rel="stylesheet" href="flower-bud.css" />
+    <link rel="stylesheet" href="window-view.css" />
+    <link rel="stylesheet" href="retro-film.css" />
   </head>
   <body>
     <main class="phone-shell" aria-label="个人地图交互探索">
@@ -123,6 +131,34 @@
           <span class="experiment-number">15</span>
           <span><b>钢笔线稿</b><small>一笔一画，把主体写进地图</small></span>
           <i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-plane" id="open-plane">
+          <span class="experiment-number">16</span>
+          <span><b>纸飞机投递</b><small>把照片折起来，让它飘进地图</small></span>
+          <i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-mood" id="open-mood">
+          <span class="experiment-number">17</span>
+          <span><b>心情色流</b><small>让此刻化成颜色，流进地图</small></span>
+          <i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-stamp" id="open-stamp">
+          <span class="experiment-number">18</span><span><b>邮票来信</b><small>把照片寄给地图上的自己</small></span><i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-diamond" id="open-diamond">
+          <span class="experiment-number">19</span><span><b>钻石信物</b><small>让小鸟衔着光，飞往地图</small></span><i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-ant" id="open-ant">
+          <span class="experiment-number">20</span><span><b>蚂蚁搬家</b><small>卷起旧照片，请蚂蚁送达</small></span><i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-flower" id="open-flower">
+          <span class="experiment-number">21</span><span><b>花苞收藏</b><small>让照片合成花苞，种进地图</small></span><i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-window" id="open-window">
+          <span class="experiment-number">22</span><span><b>窗景迁移</b><small>关上此刻的窗，在地图打开</small></span><i>↗</i>
+        </button>
+        <button class="experiment-card experiment-card-film" id="open-film">
+          <span class="experiment-number">23</span><span><b>胶片滚映</b><small>相机吐出胶片，让它滚向地图</small></span><i>↗</i>
         </button>
         <p class="menu-note">一个入口 · 两个页面 · 一段抵达</p>
       </section>
@@ -362,6 +398,157 @@
         <header class="pen-map-topbar"><button class="round-button pen-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一支钢笔正在绘制</b></div><button class="round-button pen-map-replay" aria-label="重播">↻</button></header>
         <div class="pen-map-world"><div class="pen-map-river"></div><div class="pen-map-road pen-map-road-a"></div><div class="pen-map-road pen-map-road-b"></div><span class="pen-map-label label-one">NORTH PARK</span><span class="pen-map-label label-two">RIVER BANK</span><div class="pen-canvas"><svg viewBox="0 0 220 250" aria-label="教堂线稿"><path class="pen-line line-a" d="M27 218V93h27V52h19V24h10v28h26v57h20V52h18V24h10v28h19v41h22v125M27 218h171M52 104h26v24H52m60-24h28v24h-28M88 218v-49c0-21 30-21 30 0v49M65 142h19v31H65m63-31h22v31h-22" /></svg><div class="pen-nib"></div></div><div class="pen-fill-subject"><img src="assets/church.jpg" alt="由线稿变成的教堂" /></div><div class="pen-ink-spark"><i></i><i></i><i></i><i></i></div><p class="pen-map-copy">线条长出了真实的重量</p></div>
         <footer class="pen-map-footer"><span></span>一笔一画，把记忆留在城市里</footer>
+      </section>
+
+      <section class="screen plane-camera-screen is-hidden" id="plane-camera-screen">
+        <header class="plane-topbar"><button class="round-button plane-back" aria-label="返回菜单">←</button><span>FOLD / A MEMORY</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="plane-studio">
+          <div class="desk-paper desk-paper-one"><i></i><i></i><i></i></div>
+          <div class="desk-paper desk-paper-two"><span>NOTES<br />FROM TODAY</span></div>
+          <div class="desk-paper desk-paper-three"></div>
+          <div class="fold-stage" id="fold-stage" aria-label="照片折成纸飞机的过程">
+            <div class="fold-sheet">
+              <div class="photo-paper-face"><img src="assets/church.jpg" alt="印在纸上的教堂照片" /><span>PHOTO / 16</span></div>
+              <div class="paper-fold corner-fold corner-fold-left"><img src="assets/church.jpg" alt="" /><b></b></div>
+              <div class="paper-fold corner-fold corner-fold-right"><img src="assets/church.jpg" alt="" /><b></b></div>
+              <div class="paper-fold side-fold side-fold-left"><img src="assets/church.jpg" alt="" /><b></b></div>
+              <div class="paper-fold side-fold side-fold-right"><img src="assets/church.jpg" alt="" /><b></b></div>
+              <i class="paper-crease crease-left"></i><i class="paper-crease crease-right"></i><i class="paper-crease crease-center"></i>
+            </div>
+            <div class="finished-plane" aria-hidden="true"><div class="plane-white-shell"></div><img src="assets/church.jpg" alt="" /><i></i><b></b></div>
+            <div class="fold-status"><span>PHOTO / 16</span><b id="fold-status-copy">照片已展开，等待折叠</b></div>
+          </div>
+        </div>
+        <div class="plane-controls">
+          <p id="plane-hint">桌上有一张刚刚拍下的照片</p>
+          <button class="fold-button" id="fold-button"><i>◇</i><span>折成纸飞机</span></button>
+          <button class="plane-send is-hidden" id="plane-send">飞往地图 <span>→</span></button>
+        </div>
+      </section>
+
+      <section class="screen plane-map-screen is-hidden" id="plane-map-screen">
+        <header class="plane-map-topbar"><button class="round-button plane-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一架纸飞机正在靠近</b></div><button class="round-button plane-replay" aria-label="重播">↻</button></header>
+        <div class="plane-map-world">
+          <div class="plane-river"></div><div class="plane-road plane-road-main"></div><div class="plane-road plane-road-cross"></div>
+          <span class="plane-map-label plane-label-one">北园</span><span class="plane-map-label plane-label-two">广场</span><span class="plane-map-label plane-label-three">河岸</span>
+          <div class="flight-trail"><i></i><i></i><i></i></div>
+          <div class="map-paper-plane"><div class="plane-white-shell"></div><img src="assets/church.jpg" alt="由照片折成的纸飞机" /><i></i><b></b></div>
+          <div class="plane-landing-shadow"></div>
+          <div class="plane-cutout"><img src="assets/church.jpg" alt="从纸飞机中留在地图上的照片主体" /></div>
+          <div class="plane-sparkles"><i></i><i></i><i></i><i></i></div>
+          <p class="plane-arrival-copy">照片落下，留下被看见的主体</p>
+        </div>
+        <footer class="plane-map-footer"><span></span>折痕留在风里，画面留在地图上</footer>
+      </section>
+
+      <section class="screen mood-camera-screen is-hidden" id="mood-camera-screen">
+        <header class="mood-topbar"><button class="round-button mood-back" aria-label="返回菜单">←</button><span>MOOD / COLOR</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="mood-capture">
+          <div class="mood-photo"><img src="assets/church.jpg" alt="准备化成心情粒子的教堂照片" /></div>
+          <div class="mood-vignette"></div>
+          <div class="mood-lock"><i></i><b>心情色温</b><span>温暖 · 金橙色</span></div>
+          <div class="capture-wand"><i></i><b>✦</b></div>
+          <div class="wand-arc"></div>
+          <div class="mood-particle-cloud" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="mood-sample"><span>MOOD COLOR / 17</span><b>这一刻，是温暖的金橙色</b></div>
+        </div>
+        <div class="mood-controls">
+          <p id="mood-hint">让魔法棒读出这一刻的颜色</p>
+          <button class="mood-button" id="mood-button"><i>✦</i><span>化成心情粒子</span></button>
+          <button class="mood-send is-hidden" id="mood-send">引向地图 <span>→</span></button>
+        </div>
+      </section>
+
+      <section class="screen mood-map-screen is-hidden" id="mood-map-screen">
+        <header class="mood-map-topbar"><button class="round-button mood-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一束心情正在流动</b></div><button class="round-button mood-replay" aria-label="重播">↻</button></header>
+        <div class="mood-map-world">
+          <div class="mood-river"></div><div class="mood-road mood-road-main"></div><div class="mood-road mood-road-cross"></div>
+          <span class="mood-map-label mood-label-one">北园</span><span class="mood-map-label mood-label-two">广场</span><span class="mood-map-label mood-label-three">河岸</span>
+          <div class="map-wand"><i></i><b>✦</b></div>
+          <div class="mood-flow-path"></div>
+          <div class="mood-particle-stream" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="mood-destination"><i></i><i></i><span></span></div>
+          <div class="mood-church"><img src="assets/church.jpg" alt="由心情粒子汇聚成的教堂" /><span></span></div>
+          <div class="mood-afterglow"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="mood-arrival-copy">颜色找到落点，留下这一刻的心情</p>
+        </div>
+        <footer class="mood-map-footer"><span></span>地图记住的不只是地点，还有当时的颜色</footer>
+      </section>
+
+      <section class="screen stamp-camera-screen is-hidden" id="stamp-camera-screen">
+        <header class="stamp-topbar"><button class="round-button stamp-back" aria-label="返回菜单">←</button><span>POST / A MOMENT</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="stamp-desk">
+          <div class="postcard-lines"><i></i><i></i><i></i><span>TO: MY MAP</span></div>
+          <div class="photo-stamp"><img src="assets/church.jpg" alt="邮票相框里的教堂" /><span>08·27</span><b>此刻</b></div>
+          <div class="postmark"><i></i><b>PERSONAL<br />MAP</b></div>
+          <div class="red-mailbox"><i></i><b>POST</b><span></span></div>
+          <div class="stamp-envelope"><i></i><b>TO / MAP</b></div>
+        </div>
+        <div class="stamp-controls"><p id="stamp-hint">把这一刻收进一枚邮票</p><button class="stamp-button" id="stamp-button"><i>◉</i><span>盖下邮戳</span></button><button class="stamp-send is-hidden" id="stamp-send">等待投递 <span>→</span></button></div>
+      </section>
+      <section class="screen mail-map-screen is-hidden" id="mail-map-screen">
+        <header class="mail-map-topbar"><button class="round-button mail-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>快递员正在送一封信</b></div><button class="round-button mail-replay" aria-label="重播">↻</button></header>
+        <div class="mail-map-world"><div class="mail-river"></div><div class="mail-road mail-road-main"></div><div class="mail-road mail-road-cross"></div><span class="mail-label mail-label-one">北园</span><span class="mail-label mail-label-two">广场</span><div class="mail-route"></div><div class="courier"><i></i><span></span><b></b><em></em><strong>✉</strong></div><div class="map-mailbox"><i></i><b>07</b></div><div class="delivered-letter"><i></i><img src="assets/church.jpg" alt="送达地图的教堂邮票" /></div><p class="mail-arrival-copy">来自此刻的信，已经送达</p></div>
+        <footer class="mail-map-footer"><span></span>有些照片，适合写成寄给城市的信</footer>
+      </section>
+
+      <section class="screen diamond-camera-screen is-hidden" id="diamond-camera-screen">
+        <header class="diamond-topbar"><button class="round-button diamond-back" aria-label="返回菜单">←</button><span>LIGHT / KEEPSAKE</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="diamond-sky"><div class="diamond-photo"><img src="assets/church.jpg" alt="即将结晶的教堂照片" /></div><div class="crystal-rays"><i></i><i></i><i></i><i></i></div><div class="photo-diamond"><img src="assets/church.jpg" alt="折射教堂影子的钻石" /><i></i><i></i><i></i><span></span></div><div class="capture-bird"><i></i><span></span><b></b><em></em></div><div class="diamond-caption"><span>LIGHT SAMPLE / 19</span><b>把这一帧凝成一颗钻石</b></div></div>
+        <div class="diamond-controls"><p id="diamond-hint">让照片里的光慢慢结晶</p><button class="diamond-button" id="diamond-button"><i>◇</i><span>凝成钻石</span></button><button class="diamond-send is-hidden" id="diamond-send">跟随小鸟 <span>→</span></button></div>
+      </section>
+      <section class="screen bird-map-screen is-hidden" id="bird-map-screen">
+        <header class="bird-map-topbar"><button class="round-button bird-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>小鸟衔着一束光飞来</b></div><button class="round-button bird-replay" aria-label="重播">↻</button></header>
+        <div class="bird-map-world"><div class="bird-river"></div><div class="bird-road bird-road-main"></div><div class="bird-road bird-road-cross"></div><span class="bird-label bird-label-one">北园</span><span class="bird-label bird-label-two">河岸</span><div class="bird-flight"><div class="map-bird"><i></i><span></span><b></b><em></em></div><div class="carried-diamond"><img src="assets/church.jpg" alt="小鸟衔着的钻石" /></div></div><div class="diamond-shadow"></div><div class="placed-diamond"><img src="assets/church.jpg" alt="放在地图上的教堂钻石" /><i></i><span></span></div><div class="diamond-glints"><i></i><i></i><i></i><i></i></div><p class="bird-arrival-copy">小鸟放下钻石，也放下照片里的光</p></div>
+        <footer class="bird-map-footer"><span></span>被珍藏的画面，会在地图上继续折射</footer>
+      </section>
+
+      <section class="screen ant-camera-screen is-hidden" id="ant-camera-screen">
+        <header class="ant-topbar"><button class="round-button ant-back" aria-label="返回菜单">←</button><span>PAPER / LITTLE MOVERS</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="kraft-table"><div class="torn-photo"><img src="assets/church.jpg" alt="牛皮纸相框里的教堂" /><span>今天看见的远方</span></div><div class="paper-roll"><img src="assets/church.jpg" alt="卷起的教堂照片" /><i></i><b></b></div><div class="ant ant-a"><i></i><b></b><span></span></div><div class="ant ant-b"><i></i><b></b><span></span></div><div class="ant ant-c"><i></i><b></b><span></span></div><div class="ant-trail"></div></div>
+        <div class="ant-controls"><p id="ant-hint">旧纸边缘，正好收藏这一刻</p><button class="ant-button" id="ant-button"><i>↻</i><span>卷起照片</span></button><button class="ant-send is-hidden" id="ant-send">跟着蚂蚁 <span>→</span></button></div>
+      </section>
+      <section class="screen ant-map-screen is-hidden" id="ant-map-screen">
+        <header class="ant-map-topbar"><button class="round-button ant-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>小小搬运队正在赶路</b></div><button class="round-button ant-replay" aria-label="重播">↻</button></header>
+        <div class="ant-map-world"><div class="ant-river"></div><div class="ant-road ant-road-main"></div><div class="ant-road ant-road-cross"></div><span class="ant-map-label ant-label-one">北园</span><span class="ant-map-label ant-label-two">广场</span><div class="moving-ant-group"><div class="map-scroll"><i></i><b></b></div><div class="tiny-ant tiny-ant-one"><i></i><b></b><span></span></div><div class="tiny-ant tiny-ant-two"><i></i><b></b><span></span></div><div class="tiny-ant tiny-ant-three"><i></i><b></b><span></span></div></div><div class="scroll-shadow"></div><div class="unrolled-kraft"><img src="assets/church.jpg" alt="蚂蚁送到地图上的复古照片" /><span>MEMORY / 20</span></div><div class="resting-ants"><i></i><i></i><i></i></div><p class="ant-arrival-copy">搬了很远，它们把这一刻稳稳放下</p></div>
+        <footer class="ant-map-footer"><span></span>地图很大，小小的记忆也能找到位置</footer>
+      </section>
+
+      <section class="screen flower-camera-screen is-hidden" id="flower-camera-screen">
+        <header class="flower-topbar"><button class="round-button flower-back" aria-label="返回菜单">←</button><span>BLOOM / CAPTURE</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="flower-garden"><div class="leaf-shadow leaf-shadow-a"></div><div class="leaf-shadow leaf-shadow-b"></div><div class="flower-frame"><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div><div class="flower-photo"><img src="assets/church.jpg" alt="花朵取景框里的教堂" /></div><div class="flower-heart">✦</div></div><div class="closed-bud"><img src="assets/church.jpg" alt="由照片闭合成的花苞" /><i></i><i></i><span></span></div><div class="flower-readout"><span>FLOWER FRAME / 21</span><b>把这一刻开成一朵花</b></div></div>
+        <div class="flower-controls"><p id="flower-hint">让景色落在花心里</p><button class="flower-button" id="flower-button"><i>✿</i><span>合成花苞</span></button><button class="flower-send is-hidden" id="flower-send">种进地图 <span>→</span></button></div>
+      </section>
+      <section class="screen flower-map-screen is-hidden" id="flower-map-screen">
+        <header class="flower-map-topbar"><button class="round-button flower-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一枚花苞正在落下</b></div><button class="round-button flower-replay" aria-label="重播">↻</button></header>
+        <div class="flower-map-world"><div class="flower-river"></div><div class="flower-road flower-road-main"></div><div class="flower-road flower-road-cross"></div><span class="flower-label flower-label-one">北园</span><span class="flower-label flower-label-two">花径</span><div class="falling-bud"><i></i><i></i><span></span></div><div class="planting-ring"></div><div class="map-flower-memory"><div class="memory-stem"></div><div class="memory-leaf leaf-left"></div><div class="memory-leaf leaf-right"></div><div class="memory-bloom"><img src="assets/church.jpg" alt="种在地图上的照片花朵" /><i></i></div></div><div class="flower-sparkles"><i></i><i></i><i></i><i></i></div><p class="flower-arrival-copy">花苞扎根，重新开出那一刻</p></div>
+        <footer class="flower-map-footer"><span></span>地图上多了一朵，只属于今天的花</footer>
+      </section>
+
+      <section class="screen window-camera-screen is-hidden" id="window-camera-screen">
+        <header class="window-topbar"><button class="round-button window-back" aria-label="返回菜单">←</button><span>WINDOW / VIEW</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="window-room"><div class="wall-light"></div><div class="photo-window"><div class="window-scene"><img src="assets/church.jpg" alt="窗户里的教堂景色" /></div><div class="window-cross"></div><div class="shutter shutter-left"><i></i><i></i><i></i><span></span></div><div class="shutter shutter-right"><i></i><i></i><i></i><span></span></div><div class="window-sill"></div><div class="window-curtain curtain-left"></div><div class="window-curtain curtain-right"></div></div><div class="window-caption"><span>VIEW / 22</span><b>把窗外的景色带走</b></div></div>
+        <div class="window-controls"><p id="window-hint">此刻正停在窗外</p><button class="window-button" id="window-button"><i>▣</i><span>关上窗户</span></button><button class="window-send is-hidden" id="window-send">带去地图 <span>→</span></button></div>
+      </section>
+      <section class="screen window-map-screen is-hidden" id="window-map-screen">
+        <header class="window-map-topbar"><button class="round-button window-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一扇窗正在出现</b></div><button class="round-button window-replay" aria-label="重播">↻</button></header>
+        <div class="window-map-world"><div class="window-river"></div><div class="window-road window-road-main"></div><div class="window-road window-road-cross"></div><span class="window-label window-label-one">北园</span><span class="window-label window-label-two">河岸</span><div class="map-window"><div class="map-window-scene"><img src="assets/church.jpg" alt="在地图打开的教堂窗景" /></div><div class="map-window-cross"></div><div class="map-shutter map-shutter-left"><i></i><i></i><i></i></div><div class="map-shutter map-shutter-right"><i></i><i></i><i></i></div><div class="map-window-sill"></div></div><div class="window-light-beam"></div><p class="window-arrival-copy">窗户打开，远方成了地图的一部分</p></div>
+        <footer class="window-map-footer"><span></span>换一个地方打开窗，还是同一片景色</footer>
+      </section>
+
+      <section class="screen film-camera-screen is-hidden" id="film-camera-screen">
+        <header class="film-topbar"><button class="round-button film-back" aria-label="返回菜单">←</button><span>ANALOG / FRAME</span><button class="round-button" aria-label="更多">···</button></header>
+        <div class="film-studio"><div class="retro-camera"><div class="camera-body"><i></i><b></b><span>PERSONAL<br />CAMERA</span><em></em></div><div class="camera-lens"><i></i><b></b></div><div class="camera-flash"></div><div class="film-slot"></div></div><div class="developing-film"><i></i><div class="film-frame"><img src="assets/church.jpg" alt="胶片中的教堂" /></div><div class="film-frame"><img src="assets/church.jpg" alt="胶片中的教堂" /></div><div class="film-frame"><img src="assets/church.jpg" alt="胶片中的教堂" /></div></div><div class="film-roll"><i></i><b></b><span></span></div><div class="film-caption"><span>FRAME / 23</span><b>让光留在一格胶片里</b></div></div>
+        <div class="film-controls"><p id="film-hint">复古相机已经对准这一刻</p><button class="film-button" id="film-button"><i>●</i><span>按下快门</span></button><button class="film-send is-hidden" id="film-send">滚向地图 <span>→</span></button></div>
+      </section>
+      <section class="screen film-map-screen is-hidden" id="film-map-screen">
+        <header class="film-map-topbar"><button class="round-button film-map-back" aria-label="返回菜单">←</button><div><small>我的地图</small><b>一卷胶片正在滚来</b></div><button class="round-button film-replay" aria-label="重播">↻</button></header>
+        <div class="film-map-world"><div class="film-river"></div><div class="film-road film-road-main"></div><div class="film-road film-road-cross"></div><span class="film-label film-label-one">北园</span><span class="film-label film-label-two">广场</span><div class="rolling-film"><i></i><b></b><span></span></div><div class="film-track"></div><div class="unrolled-film"><i></i><div class="map-film-frame"><img src="assets/church.jpg" alt="在地图展开的教堂胶片" /></div><div class="map-film-frame"><img src="assets/church.jpg" alt="在地图展开的教堂胶片" /></div><div class="map-film-frame"><img src="assets/church.jpg" alt="在地图展开的教堂胶片" /></div></div><p class="film-arrival-copy">胶片展开，光把教堂留在这里</p></div>
+        <footer class="film-map-footer"><span></span>城市像一台暗房，替你显影每次经过</footer>
       </section>
     </main>
     <script src="app.js"></script>
