@@ -1,0 +1,5 @@
+/* 保留拍下的周围景色，只让中央的教堂主体被传送门带走。 */
+.magic-photo:after { content:""; position:absolute; z-index:2; inset:0; opacity:0; pointer-events:none; background:radial-gradient(circle at 50% 48%,#211335 0 13%,#582a7aee 17%,#e1a65f88 20%,transparent 29%); mix-blend-mode:screen; }
+.magic-screen.casting .magic-photo { animation:none; }.magic-screen.casting .magic-photo img { animation:sceneRemain 1.1s .35s forwards; }.magic-screen.casting .magic-photo:after { animation:portalErase 1.12s .35s forwards; }
+@keyframes sceneRemain { to { filter:saturate(.48) brightness(.5) contrast(1.05); } }
+@keyframes portalErase { 0%{opacity:0;transform:scale(.12)} 32%{opacity:1;transform:scale(.82)} 70%{opacity:.98;transform:scale(1.12)} 100%{opacity:.62;transform:scale(1)} }
