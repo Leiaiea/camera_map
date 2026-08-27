@@ -1,0 +1,10 @@
+/* 重写为单一搬运载荷：爪子与主体必须共享同一个横移容器。 */
+.crane-map-screen .crane-cargo { position:absolute; z-index:7; top:13%; left:9%; width:210px; height:300px; opacity:0; transform:none; }
+.crane-map-screen .crane-cargo .moving-claw { top:0; left:0; opacity:1; transform:none; }
+.crane-map-screen .crane-cargo .crane-subject { top:105px !important; left:-39px !important; opacity:1; transform-origin:center top !important; transform:scale(.35); }
+.crane-map-screen.craning .crane-cargo { animation:cargoCarry 2.25s .15s cubic-bezier(.17,.72,.25,1) forwards !important; }
+.crane-map-screen.craning .crane-cargo .crane-subject { animation:cargoDrop .78s 2.3s cubic-bezier(.2,.72,.25,1) forwards !important; }
+.crane-map-screen.craning .crane-cargo .moving-claw { animation:cargoRelease .42s 2.34s ease-out forwards !important; }
+@keyframes cargoCarry { 0%{opacity:0;transform:translateX(0)} 12%{opacity:1;transform:translateX(0)} 22%{transform:translateX(25px)} 100%{opacity:1;transform:translateX(160px)} }
+@keyframes cargoDrop { 0%{top:105px;left:-39px;transform:scale(.35);opacity:1} 45%{top:calc(45% - 118px);left:-39px;transform:scale(.55);opacity:1} 100%{top:calc(45% - 118px);left:-39px;transform:scale(1);opacity:1} }
+@keyframes cargoRelease { to{opacity:0;transform:translateY(-7px)} }

@@ -1,0 +1,15 @@
+/* 修正方向冲突：主体本身移动，主体内的照片不再重复缩放；小人同步分段移动。 */
+.door-screen.entering .door-scene>img { animation:backgroundHold .4s forwards; }
+.door-screen.entering .door-subject>img { animation:none !important; }
+.door-screen.entering .door-subject { animation:pushIntoDoorCorrect 2s .18s cubic-bezier(.12,.63,.22,1) forwards; }
+.door-screen.entering .entry-pusher { animation:entryPusherCorrect 2.15s .08s cubic-bezier(.2,.64,.24,1) forwards; }
+.door-screen.entering .entry-pusher b { animation:pushArmsCorrect 2.15s .08s ease-in-out forwards; }
+.anywhere-map-screen.opening .pushed-church { animation:pushChurchRightCorrect 2.05s 1s cubic-bezier(.12,.66,.22,1) forwards; }
+.anywhere-map-screen.opening .door-pusher { animation:pusherRightCorrect 2.25s .72s cubic-bezier(.16,.68,.22,1) forwards; }
+.anywhere-map-screen.opening .door-pusher b { animation:pusherArmCorrect 2.25s .72s ease-in-out forwards; }
+@keyframes pushIntoDoorCorrect { 0%{transform:translateX(0);clip-path:polygon(5% 100%,5% 40%,18% 40%,18% 16%,27% 16%,27% 4%,34% 4%,34% 16%,43% 16%,43% 54%,57% 54%,57% 16%,66% 16%,66% 4%,73% 4%,73% 16%,82% 16%,82% 40%,95% 40%,95% 100%)} 42%{transform:translateX(34px)} 70%{transform:translateX(72px);opacity:.7} 100%{transform:translateX(115px);opacity:0;clip-path:inset(0 0 0 97%)} }
+@keyframes entryPusherCorrect { 0%{opacity:0;transform:translateX(-12px)} 13%{opacity:1;transform:translateX(0)} 45%{transform:translateX(26px)} 72%{transform:translateX(63px)} 100%{opacity:0;transform:translateX(98px)} }
+@keyframes pushArmsCorrect { 0%,100%{transform:rotate(-4deg)} 31%{transform:rotate(-14deg) translateY(5px)} 55%{transform:rotate(-5deg)} 79%{transform:rotate(-12deg) translateY(5px)} }
+@keyframes pushChurchRightCorrect { 0%{opacity:0;transform:translateX(-118px) scale(.72)} 18%{opacity:1;transform:translateX(-92px) scale(.78)} 45%{transform:translateX(-57px) scale(.86)} 74%{transform:translateX(-22px) scale(.95)} 100%{opacity:1;transform:translateX(0) scale(1)} }
+@keyframes pusherRightCorrect { 0%{opacity:0;transform:translateX(-18px)} 15%{opacity:1;transform:translateX(3px)} 45%{transform:translateX(41px)} 72%{transform:translateX(82px)} 100%{opacity:0;transform:translateX(111px)} }
+@keyframes pusherArmCorrect { 0%,100%{transform:rotate(-3deg)} 27%{transform:rotate(-13deg) translateY(5px)} 52%{transform:rotate(-4deg)} 76%{transform:rotate(-11deg) translateY(5px)} }

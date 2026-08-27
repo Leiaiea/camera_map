@@ -1,0 +1,4 @@
+/* 最终几何定位：不用 translateY，直接以夹口和阴影计算 top 坐标。 */
+.crane-map-screen .crane-subject { top:calc(13% + 105px) !important; left:calc(9% - 39px) !important; transform-origin:center top !important; opacity:0; transform:none; }
+.crane-map-screen.craning .crane-subject { animation:subjectPixelPath 3.15s .15s cubic-bezier(.17,.72,.22,1) forwards !important; }
+@keyframes subjectPixelPath { 0%{opacity:0;left:calc(9% - 39px);top:calc(13% + 105px);transform:scale(.35)} 10%{opacity:1;left:calc(9% - 39px);top:calc(13% + 105px);transform:scale(.35)} 22%{opacity:1;left:calc(9% + 1px);top:calc(13% + 105px);transform:scale(.35)} 73%{opacity:1;left:calc(9% + 121px);top:calc(13% + 105px);transform:scale(.35)} 80%{opacity:1;left:calc(9% + 121px);top:calc(13% + 105px);transform:scale(.35)} 88%{opacity:1;left:calc(9% + 121px);top:calc(58% - 118px);transform:scale(.55)} 100%{opacity:1;left:calc(9% + 121px);top:calc(58% - 118px);transform:scale(1)} }

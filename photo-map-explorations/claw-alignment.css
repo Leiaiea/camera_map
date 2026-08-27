@@ -1,0 +1,4 @@
+/* 地图页坐标对齐：主体顶部贴合机械爪夹口，不再悬在远处。 */
+.crane-map-screen .crane-subject { top:calc(13% + 105px); }.crane-map-screen.craning .crane-subject { animation:craneSubjectAligned 2s .15s cubic-bezier(.17,.72,.25,1) forwards,subjectDropAligned .7s 2.2s cubic-bezier(.2,.7,.25,1) forwards; }
+@keyframes craneSubjectAligned { 0%{opacity:0;transform:translateX(-120px) scale(.35)} 15%{opacity:1;transform:translateX(-120px) scale(.35)} 75%{opacity:1;transform:translateX(-18px) scale(.35)} 100%{opacity:1;transform:translateX(0) scale(.35)} }
+@keyframes subjectDropAligned { 0%{transform:translateY(0) scale(.35)} 35%{transform:translateY(calc(22% - 54px)) scale(.54)} 100%{transform:translateY(calc(45% - 178px)) scale(1);opacity:1} }

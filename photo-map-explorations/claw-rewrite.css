@@ -1,0 +1,7 @@
+/* 11 地图页重写：爪子、主体共用同一条运动时间轴，避免旧规则互相覆盖。 */
+.crane-map-screen .moving-claw { top:13%; left:9%; opacity:0; transform:none; animation:none; }
+.crane-map-screen .crane-subject { top:calc(13% + 105px); left:calc(9% - 39px); transform-origin:center bottom; opacity:0; transform:none; animation:none; }
+.crane-map-screen.craning .moving-claw { animation:craneCarryAll 3.15s cubic-bezier(.18,.72,.22,1) forwards !important; }
+.crane-map-screen.craning .crane-subject { animation:subjectCarryAll 3.15s cubic-bezier(.18,.72,.22,1) forwards !important; }
+@keyframes craneCarryAll { 0%{opacity:0;transform:translateX(0) translateY(0)} 10%{opacity:1;transform:translateX(0) translateY(0)} 22%{opacity:1;transform:translateX(26px) translateY(0)} 73%{opacity:1;transform:translateX(160px) translateY(0)} 81%{opacity:1;transform:translateX(160px) translateY(0) scaleY(.82)} 88%{opacity:0;transform:translateX(160px) translateY(0) scaleY(.55)} 100%{opacity:0;transform:translateX(160px) translateY(12px) scaleY(.35)} }
+@keyframes subjectCarryAll { 0%{opacity:0;transform:translateX(0) translateY(0) scale(.35)} 10%{opacity:1;transform:translateX(0) translateY(0) scale(.35)} 22%{opacity:1;transform:translateX(26px) translateY(0) scale(.35)} 73%{opacity:1;transform:translateX(160px) translateY(0) scale(.35)} 80%{opacity:1;transform:translateX(160px) translateY(4px) scale(.35)} 88%{opacity:1;transform:translateX(160px) translateY(92px) scale(.56)} 100%{opacity:1;transform:translateX(160px) translateY(calc(45% - 178px)) scale(1)} }

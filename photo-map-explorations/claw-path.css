@@ -1,0 +1,6 @@
+/* 校正地图页的搬运路径：机械爪与主体从左侧平移到地图中心。 */
+.crane-map-screen.craning .moving-claw { animation:craneMoveCenter 2s .15s cubic-bezier(.17,.72,.25,1) forwards,clawReleaseCenter .45s 2.25s forwards; }.crane-map-screen.craning .crane-subject { animation:craneSubjectCenter 2s .15s cubic-bezier(.17,.72,.25,1) forwards,subjectDropCenter .7s 2.2s ease-in forwards; }
+@keyframes craneMoveCenter { 0%{opacity:0;transform:translate(0,0)} 15%{opacity:1;transform:translate(15px,0)} 75%{opacity:1;transform:translate(145px,0)} 100%{opacity:1;transform:translate(160px,65px)} }
+@keyframes craneSubjectCenter { 0%{opacity:0;transform:translateX(-120px) translateY(108px) scale(.35)} 15%{opacity:1;transform:translateX(-120px) translateY(108px) scale(.35)} 75%{opacity:1;transform:translateX(-18px) translateY(108px) scale(.35)} 100%{opacity:1;transform:translateX(0) translateY(108px) scale(.35)} }
+@keyframes subjectDropCenter { to{transform:translateX(0) translateY(160px) scale(.35);opacity:1} }
+@keyframes clawReleaseCenter { to{transform:translate(160px,65px) scaleY(.5);opacity:0} }

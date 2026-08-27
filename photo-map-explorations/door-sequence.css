@@ -1,0 +1,20 @@
+/* 任意门最终时序：先缩小，再出现/打开门，最后才由小人推进。 */
+.door-screen.entering .door-scene>img { animation:backgroundHold .4s .18s forwards; }
+.door-screen.entering .door-subject>img { animation:none !important; }
+.door-screen.entering .door-subject { animation:subjectShrinkThenPush 3.05s .12s cubic-bezier(.14,.68,.22,1) forwards; }
+.door-screen.entering .any-door { opacity:0; animation:doorAppear .35s 1.35s ease-out forwards,doorOpen .65s 1.7s both; }
+.door-screen.entering .entry-pusher { animation:entryWaitThenPush 2.15s 1.92s cubic-bezier(.2,.64,.24,1) forwards; }
+.door-screen.entering .entry-pusher b { animation:pushArmsCorrect 2.15s 1.92s ease-in-out forwards; }
+@keyframes subjectShrinkThenPush { 0%,24%{transform:translateX(0) scale(1);opacity:1} 38%{transform:translateX(8px) scale(.64);opacity:1} 52%{transform:translateX(8px) scale(.64);opacity:1} 76%{transform:translateX(54px) scale(.58);opacity:.8} 100%{transform:translateX(112px) scale(.5);opacity:0;clip-path:inset(0 0 0 97%)} }
+@keyframes doorAppear { from{opacity:0;transform:translateY(10px) scale(.8)} to{opacity:.95;transform:translateY(0) scale(1)} }
+@keyframes entryWaitThenPush { 0%{opacity:0;transform:translateX(-15px)} 12%{opacity:1;transform:translateX(0)} 48%{opacity:1;transform:translateX(13px)} 73%{transform:translateX(54px)} 100%{opacity:0;transform:translateX(101px)} }
+
+.anywhere-map-screen.opening .map-door { animation:mapDoorAppear .45s .18s ease-out forwards,mapDoorOpen .62s .78s ease-in-out forwards,mapDoorLeave .45s 3.65s ease-out forwards; }
+.anywhere-map-screen.opening .door-pusher { animation:pusherMapWait 2.3s 1.38s cubic-bezier(.16,.68,.22,1) forwards; }
+.anywhere-map-screen.opening .door-pusher b { animation:pusherArmCorrect 2.3s 1.38s ease-in-out forwards; }
+.anywhere-map-screen.opening .pushed-church { animation:pushChurchFromDoor 2.1s 1.55s cubic-bezier(.12,.66,.22,1) forwards; }
+@keyframes mapDoorAppear { from{opacity:0;transform:scale(.35)} to{opacity:1;transform:scale(1)} }
+@keyframes mapDoorOpen { 0%,100%{filter:none} 45%{filter:brightness(1.35);box-shadow:0 0 0 12px #f0ce8455,0 0 26px #acd6bc} }
+@keyframes mapDoorLeave { to{opacity:0;transform:scale(.78) translateX(-10px)} }
+@keyframes pusherMapWait { 0%{opacity:0;transform:translateX(-26px)} 15%{opacity:1;transform:translateX(0)} 43%{opacity:1;transform:translateX(19px)} 72%{transform:translateX(66px)} 100%{opacity:0;transform:translateX(108px)} }
+@keyframes pushChurchFromDoor { 0%,12%{opacity:0;transform:translateX(-119px) scale(.72)} 22%{opacity:1;transform:translateX(-102px) scale(.76)} 47%{transform:translateX(-62px) scale(.85)} 73%{transform:translateX(-25px) scale(.94)} 100%{opacity:1;transform:translateX(0) scale(1)} }
