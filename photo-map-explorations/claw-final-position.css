@@ -1,0 +1,4 @@
+/* 最终位置校正：缩小/放大都以主体顶部为锚点，避免相对爪子上下跳动。 */
+.crane-map-screen .crane-subject { transform-origin:center top !important; }
+.crane-map-screen.craning .crane-subject { animation:subjectCarryStable 3.15s .15s cubic-bezier(.17,.72,.25,1) forwards !important; }
+@keyframes subjectCarryStable { 0%{opacity:0;transform:translateX(0) translateY(0) scale(.35)} 10%{opacity:1;transform:translateX(0) translateY(0) scale(.35)} 22%{opacity:1;transform:translateX(30px) translateY(0) scale(.35)} 73%{opacity:1;transform:translateX(160px) translateY(0) scale(.35)} 80%{opacity:1;transform:translateX(160px) translateY(5px) scale(.35)} 88%{opacity:1;transform:translateX(160px) translateY(92px) scale(.55)} 100%{opacity:1;transform:translateX(160px) translateY(calc(45% - 223px)) scale(1)} }

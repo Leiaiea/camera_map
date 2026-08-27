@@ -1,0 +1,6 @@
+/* 拍照前门不可见；拍照后背景照片保持原位，只移动主体裁切层。 */
+.door-screen .any-door { opacity:0; }
+.door-screen .door-subject { opacity:0; }
+.door-screen.entering .door-scene>img { animation:none !important; opacity:.72; transform:none; }
+.door-screen.entering .door-subject>img { animation:none !important; opacity:1 !important; transform:none !important; }
+.door-screen.entering .any-door { opacity:0; animation:doorAppear .35s 1.35s ease-out forwards,doorOpen .65s 1.7s both; }

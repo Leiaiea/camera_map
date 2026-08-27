@@ -1,0 +1,5 @@
+/* 主体与爪子的实际绑定，以及地图页的松爪落地放大。 */
+.claw-screen.grabbed .machine-subject { animation:machineSubjectAppear .55s 1.02s forwards,subjectAttachToClaw .8s 2.18s cubic-bezier(.2,.72,.24,1) forwards; }
+@keyframes subjectAttachToClaw { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:1;transform:translateY(-54px) scale(1)} }
+.crane-subject { transform-origin:center bottom; }.crane-map-screen.craning .crane-subject { animation:craneSubjectCenter 2s .15s cubic-bezier(.17,.72,.25,1) forwards,subjectDropLarge .7s 2.2s cubic-bezier(.2,.7,.25,1) forwards; }
+@keyframes subjectDropLarge { 0%{transform:translateX(0) translateY(108px) scale(.35)} 35%{transform:translateX(0) translateY(128px) scale(.54)} 100%{transform:translateX(0) translateY(166px) scale(1);opacity:1} }
