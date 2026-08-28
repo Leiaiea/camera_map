@@ -1,0 +1,26 @@
+# 照片素材池（体积大，不进历史）
+ptoto/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# 模型权重（上百 MB）
+*.onnx
+photo-sticker-lab/models/
+
+# 工具输出
+photo-sticker-lab/out/
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 本地高德地图凭据（仅用于地图预览）
+memory-map-world/config.js
+memory-map-world/server-output.log
+memory-map-world/server-error.log

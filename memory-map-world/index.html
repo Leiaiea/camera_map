@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="origin" />
+    <title>显影世界 · 地图预览</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="map-preview">
+      <div id="map" aria-label="高德地图预览"></div>
+      <div id="map-tone" class="map-tone" aria-hidden="true"></div>
+      <div id="ground-tint-layer" class="ground-tint-layer" aria-hidden="true"></div>
+      <div id="sticker-layer" class="sticker-layer" aria-label="地图照片贴纸"></div>
+      <p id="status" class="sr-only" aria-live="polite">正在准备地图…</p>
+      <button id="locate-button" class="map-locate-button" type="button" aria-label="定位到当前位置" title="定位到当前位置" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+        </svg>
+      </button>
+    </main>
+
+    <!-- 本地凭据必须先于高德脚本加载。 -->
+    <script src="./config.js?v=style-4c6d7a9e"></script>
+    <script src="./demo-memory-records.js?v=demo-memory-03"></script>
+    <script src="./demo-memory-ground-tints.js?v=demo-memory-01"></script>
+    <script src="./demo-memory-ground-palettes.js?v=demo-palette-01"></script>
+    <script src="./map-preview.js?v=map-outline-02"></script>
+  </body>
+</html>
