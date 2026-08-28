@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "name": "paper-muted",
+  "cutout": {
+    "model": "birefnet-general",
+    "post_process_mask": true,
+    "alpha_matting": false,
+    "inference_max_side": 2048
+  },
+  "grade": {
+    "auto_tone": {
+      "enabled": true,
+      "measure_on": "subject",
+      "gray_world": true,
+      "clip_percent": 0.5,
+      "target_luma": 0.58,
+      "strength": 0.8
+    },
+    "lut": {
+      "file": "luts/paper-muted.cube",
+      "strength": 0.85
+    }
+  },
+  "sticker": {
+    "border": {
+      "width_ratio": 0.022,
+      "min_width": 3,
+      "color": [255, 255, 255, 255],
+      "smooth": 1.0,
+      "antialias": 0.8
+    },
+    "shadow": {
+      "enabled": true,
+      "offset": [0, 8],
+      "blur": 7,
+      "color": [83, 77, 69, 85]
+    }
+  },
+  "output": {
+    "format": "png",
+    "trim_to_content": true,
+    "padding": 12
+  }
+}

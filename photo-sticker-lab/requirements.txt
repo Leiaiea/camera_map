@@ -1,0 +1,13 @@
+# 抠图：rembg 是 ONNX 模型的 wrapper，模型可通过 --model 切换
+rembg[cpu]==2.0.67
+
+# onnxruntime 必须钉在 1.19.2。
+# 本机 msvcp140.dll 是 14.27（VS 2019 运行时），而 onnxruntime >= 1.20 的
+# 预编译轮子需要更新的 VC++ 运行时，导入时会报
+#   ImportError: DLL load failed while importing onnxruntime_pybind11_state
+# 1.19.2 是最后一个能在该运行时上直接跑起来的版本。
+# 若将来装了新版 VC++ Redistributable，可以再放宽这个约束。
+onnxruntime==1.19.2
+
+Pillow==11.3.0
+numpy==2.2.6
