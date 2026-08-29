@@ -42,6 +42,13 @@ export default function App() {
     setTearPhase('exiting');
     flow.confirmCapture(draft);
   }, [flow.confirmCapture]);
+  const handleDebugConfirmCapture = useCallback((draft: CaptureDraft) => {
+    if (!import.meta.env.DEV) return;
+    // The reducer receives START_CAPTURE then CONFIRM_CAPTURE in order, so this
+    // begins at the normal post-capture boundary without rendering CapturePage.
+    flow.startCapture();
+    flow.confirmCapture(draft);
+  }, [flow.confirmCapture, flow.startCapture]);
   const handlePhotoCaptured = useCallback((photoUrl: string) => {
     setDevelopedPhotoUrl(photoUrl);
     window.requestAnimationFrame(() => setTearPhase('developed'));
@@ -58,6 +65,7 @@ export default function App() {
         onCapture={prepareCapture}
         arriving={arriving}
         onArrivalComplete={flow.completeArrival}
+        onDebugConfirmCapture={import.meta.env.DEV ? handleDebugConfirmCapture : undefined}
         isActive={!['capturing', 'transitioning', 'saving', 'error'].includes(flow.state.stage)}
         captureResetRequest={captureResetRequest}
         onCaptureResetComplete={handleCaptureResetComplete}

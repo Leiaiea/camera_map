@@ -36,7 +36,7 @@ export function InteractionArrivalStage({ interaction, moment, target, onComplet
       style={target ? { '--arrival-target-x': `${target.x}px`, '--arrival-target-y': `${target.y}px` } as CSSProperties : undefined}
       aria-label={`${interaction.name}到达地图`}
     >
-      {stickerUrl && <Arrival moment={moment} stickerUrl={stickerUrl} target={target} />}
+      {isTargetReady && <Arrival moment={moment} stickerUrl={stickerUrl} target={target} />}
     </section>
   );
 }

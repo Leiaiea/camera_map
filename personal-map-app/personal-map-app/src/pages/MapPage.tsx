@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useMemo, useState } from 'react';
-import type { Moment } from '../models/moment';
+import type { CaptureDraft, Moment } from '../models/moment';
 import type { InteractionDefinition } from '../interactions/types';
 import { MapCanvas } from '../features/map/MapCanvas';
 import { WorldElementsLayer } from '../features/world/WorldElementsLayer';
@@ -19,6 +19,7 @@ interface MapPageProps {
   onCapture: () => void;
   arriving?: { moment: Moment; interaction: InteractionDefinition };
   onArrivalComplete: () => void;
+  onDebugConfirmCapture?: (draft: CaptureDraft) => void;
   isActive: boolean;
   captureResetRequest?: number;
   onCaptureResetComplete?: () => void;
@@ -26,7 +27,7 @@ interface MapPageProps {
 
 const DEFAULT_CENTER: GeoCoordinate = { latitude: 31.2137, longitude: 121.4429 };
 
-export function MapPage({ onAdd, onCapture, arriving, onArrivalComplete, isActive, captureResetRequest, onCaptureResetComplete }: MapPageProps) {
+export function MapPage({ onAdd, onCapture, arriving, onArrivalComplete, onDebugConfirmCapture, isActive, captureResetRequest, onCaptureResetComplete }: MapPageProps) {
   const { moments, selectedMoment, selectMoment, deleteMoment, lastLocationSource, shouldShowExample } = useMoments();
   const [arrivalTarget, setArrivalTarget] = useState<{ momentId?: string; x: number; y: number }>();
   const [mapApi, setMapApi] = useState<{ map: any; AMap: any }>();
@@ -38,6 +39,11 @@ export function MapPage({ onAdd, onCapture, arriving, onArrivalComplete, isActiv
     (target?: { x: number; y: number }) => setArrivalTarget(target ? { ...target, momentId: arriving?.moment.id } : undefined),
     [arriving?.moment.id],
   );
+  const handleArrivalComplete = useCallback(() => {
+    const completedMoment = arriving?.moment;
+    onArrivalComplete();
+    if (completedMoment?.id.startsWith('debug-')) void deleteMoment(completedMoment.id);
+  }, [arriving?.moment, deleteMoment, onArrivalComplete]);
   // 定位尚未返回时也先展示默认位置的示例贴纸，成功后会自动移动到真实位置正北。
   const currentExample = shouldShowExample ? createExampleMoment(current.place ?? DEFAULT_CENTER) : undefined;
   const visibleMoments = currentExample ? [...moments, currentExample] : moments;
@@ -83,9 +89,9 @@ export function MapPage({ onAdd, onCapture, arriving, onArrivalComplete, isActiv
         <button className="map-primary-action map-capture-action" type="button" onClick={onCapture} aria-label="拍摄"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Z" /><circle cx="12" cy="14" r="3.5" /></svg></button>
         <button className="map-primary-action map-archive-action" type="button" aria-label="归档（暂未开放）" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z" /><path d="M5 8h14M9 4v4M9 13h6M9 17h4" /></svg></button>
       </nav>
-      {DevArrivalDebugTools && <Suspense fallback={null}><DevArrivalDebugTools /></Suspense>}
+      {DevArrivalDebugTools && onDebugConfirmCapture && <Suspense fallback={null}><DevArrivalDebugTools onConfirmCapture={onDebugConfirmCapture} /></Suspense>}
       {detailMoment && <MomentDetailSheet moment={detailMoment} onClose={() => selectMoment()} onDelete={() => deleteMoment(detailMoment.id)} />}
-      {arriving && <InteractionArrivalStage interaction={arriving.interaction} moment={arriving.moment} target={arrivalTarget?.momentId === arriving.moment.id ? arrivalTarget : undefined} onComplete={onArrivalComplete} />}
+      {arriving && <InteractionArrivalStage interaction={arriving.interaction} moment={arriving.moment} target={arrivalTarget?.momentId === arriving.moment.id ? arrivalTarget : undefined} onComplete={handleArrivalComplete} />}
     </main>
   );
 }
