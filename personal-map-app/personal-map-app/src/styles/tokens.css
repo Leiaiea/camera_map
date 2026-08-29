@@ -1,0 +1,5 @@
+:root{
+  --ink:#202720;--ink-soft:#626a60;--paper:#f4f2eb;--surface:#fbfaf6;--line:#d8d9d1;
+  --green:#528264;--green-dark:#26382e;--aqua:#8dcbd4;--coral:#ef7358;--yellow:#f5ca51;
+  --shadow:0 18px 60px #38383142;--radius:4px;--safe-bottom:max(18px,env(safe-area-inset-bottom));
+}

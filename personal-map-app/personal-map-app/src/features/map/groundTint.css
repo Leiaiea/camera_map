@@ -1,0 +1,3 @@
+.ground-tint{display:block;position:relative;overflow:visible;pointer-events:none;width:var(--ground-tint-width)!important;height:var(--ground-tint-height)!important;background:none!important;opacity:var(--ground-tint-opacity)!important;filter:none!important;mix-blend-mode:var(--ground-tint-blend-mode)!important;transform:none!important;isolation:isolate}
+.ground-tint:before,.ground-tint:after{display:none!important}
+.ground-tint-layer{position:absolute;inset:0;display:block;background-position:center;background-repeat:no-repeat;background-size:100% 100%;background-image:var(--ground-tint-layer-image);transform-origin:center;filter:none!important}
