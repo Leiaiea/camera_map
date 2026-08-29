@@ -1,12 +1,8 @@
-import {
-  GROUND_TINT_DARK_SOURCE_LIGHTNESS_FLOOR,
-  GROUND_TINT_LIGHTNESS,
-  GROUND_TINT_SATURATION_RATIO,
-} from '../../config/mapDemoTuning';
+import { TINT_COLOR_LIBRARY } from '../../config/mapDemoTuning';
 
 export type GroundTintPalette = readonly [string, string, string];
 
-const STORAGE_KEY = 'personal-map.ground-tint-palettes';
+const STORAGE_KEY = 'personal-map.ground-tint-palettes.v2';
 const SAMPLE_SIZE = 50;
 const NEUTRAL_GROUND_TINT_PALETTE: GroundTintPalette = ['#A8A8A8', '#A8A8A8', '#A8A8A8'];
 
@@ -66,11 +62,25 @@ function rgbToHsl(red: number, green: number, blue: number): [number, number, nu
   return [((hue * 60) + 360) % 360, saturation, lightness];
 }
 
-function toWatercolor(red: number, green: number, blue: number): string {
-  const [hue, saturation, sourceLightness] = rgbToHsl(red, green, blue);
-  const protectedLightness = Math.max(sourceLightness, GROUND_TINT_DARK_SOURCE_LIGHTNESS_FLOOR);
-  const lightness = Math.min(0.92, Math.max(0.78, GROUND_TINT_LIGHTNESS + (protectedLightness - 0.5) * 0.08));
-  return `hsl(${Math.round(hue)} ${Math.round(saturation * GROUND_TINT_SATURATION_RATIO * 100)}% ${Math.round(lightness * 100)}%)`;
+function colorLibraryIndex(color: string): number {
+  const red = Number.parseInt(color.slice(1, 3), 16);
+  const green = Number.parseInt(color.slice(3, 5), 16);
+  const blue = Number.parseInt(color.slice(5, 7), 16);
+  const [hue] = rgbToHsl(red, green, blue);
+  return TINT_COLOR_LIBRARY.reduce((closestIndex, candidate, index) => {
+    const toHue = (value: string) => rgbToHsl(Number.parseInt(value.slice(1, 3), 16), Number.parseInt(value.slice(3, 5), 16), Number.parseInt(value.slice(5, 7), 16))[0];
+    const distance = (left: number, right: number) => Math.min(Math.abs(left - right), 360 - Math.abs(left - right));
+    return distance(toHue(candidate), hue) < distance(toHue(TINT_COLOR_LIBRARY[closestIndex]!), hue) ? index : closestIndex;
+  }, 0);
+}
+function paletteFromMainIndex(mainIndex: number): GroundTintPalette {
+  const length = TINT_COLOR_LIBRARY.length;
+  return [TINT_COLOR_LIBRARY[mainIndex]!, TINT_COLOR_LIBRARY[(mainIndex - 1 + length) % length]!, TINT_COLOR_LIBRARY[(mainIndex + 1) % length]!];
+}
+function paletteForSample(red: number, green: number, blue: number): GroundTintPalette {
+  const [, saturation] = rgbToHsl(red, green, blue);
+  const warmFallbackIndex = TINT_COLOR_LIBRARY.indexOf('#FBDA74');
+  return paletteFromMainIndex(saturation < 0.12 ? warmFallbackIndex : colorLibraryIndex(`#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`));
 }
 
 /** 将照片缩至 50×50，排除近黑/近白后挑选彼此有区分度的 2–3 个主色。 */
@@ -97,7 +107,7 @@ export async function extractGroundTintPalette(imageUrl: string): Promise<Ground
     const alpha = pixels[offset + 3]!;
     const max = Math.max(red, green, blue);
     const min = Math.min(red, green, blue);
-    if (alpha < 128 || max > 242 || min < 18 || max - min < 10) continue;
+    if (alpha < 128 || max > 242 || min < 18) continue;
     const key = `${red >> 5}-${green >> 5}-${blue >> 5}`;
     const bucket = buckets.get(key) ?? { count: 0, red: 0, green: 0, blue: 0 };
     bucket.count += 1;
@@ -109,17 +119,7 @@ export async function extractGroundTintPalette(imageUrl: string): Promise<Ground
   const candidates = [...buckets.values()]
     .sort((left, right) => right.count - left.count)
     .map((bucket) => [bucket.red / bucket.count, bucket.green / bucket.count, bucket.blue / bucket.count] as const);
-  const selected: Array<readonly [number, number, number]> = [];
-  for (const candidate of candidates) {
-    const distinct = selected.every((existing) => Math.hypot(candidate[0] - existing[0], candidate[1] - existing[1], candidate[2] - existing[2]) > 42);
-    if (distinct) selected.push(candidate);
-    if (selected.length === 3) break;
-  }
-  if (!selected.length) return undefined;
-  while (selected.length < 3) selected.push(selected[selected.length - 1]!);
-  return [
-    toWatercolor(...selected[0]!),
-    toWatercolor(...selected[1]!),
-    toWatercolor(...selected[2]!),
-  ];
+  const primary = candidates[0];
+  if (!primary) return paletteFromMainIndex(TINT_COLOR_LIBRARY.indexOf('#FBDA74'));
+  return paletteForSample(...primary);
 }

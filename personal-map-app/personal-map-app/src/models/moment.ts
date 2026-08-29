@@ -44,6 +44,8 @@ export interface Moment {
   interactionType: string;
   status: MomentStatus;
   isExample?: boolean;
+  /** 内置地图演示贴纸：可查看详情，但不参与真实记录的删除与持久化。 */
+  isDemo?: boolean;
 }
 
 export interface CaptureDraft {

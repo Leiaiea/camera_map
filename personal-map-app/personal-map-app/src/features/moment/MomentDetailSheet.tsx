@@ -30,7 +30,7 @@ export function MomentDetailSheet({ moment, onClose, onDelete }: MomentDetailShe
         <div className="moment-detail-handle" />
         <header className="moment-detail-head"><h2>{placeInfo}</h2></header>
         {moment.photo && (
-          moment.isExample
+          (moment.isExample || moment.isDemo)
             ? <img className="moment-detail-photo" src={interactionImageOf(moment)} alt="示例 Moment 图片" />
             : <BorderedStickerImage className="moment-detail-photo" stickerId={moment.id} sourceUrl={interactionImageOf(moment)} alt="Moment 贴纸" />
         )}
@@ -46,7 +46,7 @@ export function MomentDetailSheet({ moment, onClose, onDelete }: MomentDetailShe
             </dd>
           </div>
         </dl>
-        {!moment.isExample && <button className="moment-detail-delete" onClick={onDelete}>删除这个 Moment</button>}
+        {!moment.isExample && !moment.isDemo && <button className="moment-detail-delete" onClick={onDelete}>删除这个 Moment</button>}
         {moment.isExample && <p className="moment-detail-example-note">这是无记录状态下的示范内容，不会保存到你的记录中。</p>}
       </section>
     </div>

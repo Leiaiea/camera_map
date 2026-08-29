@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useMemo, useState } from 'react';
 import type { CaptureDraft, Moment } from '../models/moment';
 import type { InteractionDefinition } from '../interactions/types';
 import { MapCanvas } from '../features/map/MapCanvas';
+import { demoMemoryMoments } from '../features/map/demoMemoryMoments';
 import { WorldElementsLayer } from '../features/world/WorldElementsLayer';
 import { useCurrentPosition } from '../features/map/useCurrentPosition';
 import { createExampleMoment, useMoments } from '../features/moment/MomentProvider';
@@ -28,7 +29,7 @@ interface MapPageProps {
 const DEFAULT_CENTER: GeoCoordinate = { latitude: 31.2137, longitude: 121.4429 };
 
 export function MapPage({ onAdd, onCapture, arriving, onArrivalComplete, onDebugConfirmCapture, isActive, captureResetRequest, onCaptureResetComplete }: MapPageProps) {
-  const { moments, selectedMoment, selectMoment, deleteMoment, lastLocationSource, shouldShowExample } = useMoments();
+  const { moments, selectedMoment, selectedId, selectMoment, deleteMoment, lastLocationSource, shouldShowExample } = useMoments();
   const [arrivalTarget, setArrivalTarget] = useState<{ momentId?: string; x: number; y: number }>();
   const [mapApi, setMapApi] = useState<{ map: any; AMap: any }>();
   // 定位与高德 SDK 初始化同步启动，避免先等定位再开始拉地图瓦片。
@@ -47,7 +48,8 @@ export function MapPage({ onAdd, onCapture, arriving, onArrivalComplete, onDebug
   // 定位尚未返回时也先展示默认位置的示例贴纸，成功后会自动移动到真实位置正北。
   const currentExample = shouldShowExample ? createExampleMoment(current.place ?? DEFAULT_CENTER) : undefined;
   const visibleMoments = currentExample ? [...moments, currentExample] : moments;
-  const detailMoment = selectedMoment?.isExample ? currentExample : selectedMoment;
+  const selectedDemoMoment = demoMemoryMoments.find((moment) => moment.id === selectedId);
+  const detailMoment = selectedDemoMoment ?? (selectedMoment?.isExample ? currentExample : selectedMoment);
   const momentSpawnCenters = useMemo(
     () => moments.map((moment) => ({ latitude: moment.blurredLatitude, longitude: moment.blurredLongitude })),
     [moments],

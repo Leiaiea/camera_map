@@ -30,7 +30,7 @@ import {
 } from '../../config/mapDemoTuning';
 import { getBorderedStickerUrl } from '../../services/media/stickerBorder';
 import { extractGroundTintPalette, hasGroundTintPalette, saveGroundTintPalette } from '../../services/mapVisual/groundTintPaletteService';
-import { createGroundTintCanvas, createGroundTintTextureLayers, rasterizeGroundTintTexture, verifyGroundTintVisibility } from './groundTintTextures';
+import { createGroundTintTextureLayers, rasterizeGroundTintTexture, verifyGroundTintVisibility } from './groundTintTextures';
 import { toMapMomentDisplay, type MapMomentDisplay } from './momentMapAdapter';
 import { StickerGenerationDebugToggle } from './StickerGenerationDebugToggle';
 import { demoMemoryMoments } from './demoMemoryMoments';
@@ -163,7 +163,8 @@ export function MapCanvas({ moments, currentPosition, hiddenMomentId, arrivalMom
   const mapRef = useRef<any>(undefined);
   const AMapRef = useRef<any>(undefined);
   const markersRef = useRef<any[]>([]);
-  const tintOverlaysRef = useRef<any[]>([]);
+  const tintOverlaysRef = useRef(new Map<string, { signature: string; layers: any[] }>());
+  const tintRequestsRef = useRef(new Map<string, string>());
   const currentPositionMarkerRef = useRef<any>(undefined);
   const completedCaptureResetRef = useRef<number | undefined>(undefined);
   const [isReady, setIsReady] = useState(false);
@@ -240,7 +241,7 @@ export function MapCanvas({ moments, currentPosition, hiddenMomentId, arrivalMom
         mapRef.current = map;
       })
       .catch((error: unknown) => { if (!cancelled) setMapError(error instanceof Error ? error.message : '地图加载失败'); });
-    return () => { cancelled = true; currentPositionMarkerRef.current?.setMap(null); paperTexture?.remove(); mapTone?.remove(); mapRef.current?.destroy(); mapRef.current = undefined; };
+    return () => { cancelled = true; currentPositionMarkerRef.current?.setMap(null); tintOverlaysRef.current.forEach(({ layers }) => layers.forEach((layer) => removeMapLayer(mapRef.current, layer))); tintOverlaysRef.current.clear(); paperTexture?.remove(); mapTone?.remove(); mapRef.current?.destroy(); mapRef.current = undefined; };
   }, [onMapReady, onReady]);
 
   useEffect(() => {
@@ -263,13 +264,11 @@ export function MapCanvas({ moments, currentPosition, hiddenMomentId, arrivalMom
   useEffect(() => {
     if (!isReady || !mapRef.current || !AMapRef.current) return;
     markersRef.current.forEach((marker) => marker.setMap(null));
-    tintOverlaysRef.current.forEach((layer) => removeMapLayer(mapRef.current, layer));
     const AMap = AMapRef.current;
     const mapMoments = USE_FIXED_LOCATION ? [...moments, ...demoMemoryMoments] : moments;
     const displays = mapMoments.filter((moment) => moment.id !== hiddenMomentId).map(toMapMomentDisplay);
-    tintOverlaysRef.current = [];
     let isTintEffectActive = true;
-    if (GROUND_TINT_ENABLED) {
+    if (false && GROUND_TINT_ENABLED) {
       // ImageLayer 没有公开容器；CanvasLayer 的 canvas 由我们持有，使用 normal + 低透明度保持底图透出。
       const GroundOverlay = AMap.CanvasLayer;
       console.info('[map][水彩第 1 步] 覆盖物 API 检查', {
@@ -286,17 +285,15 @@ export function MapCanvas({ moments, currentPosition, hiddenMomentId, arrivalMom
         const center = offsetCoordinateByMeters(display.latitude, display.longitude, layer.offsetXmeters, layer.offsetYmeters);
         const bounds = createGroundTintBounds(AMap, center.latitude, center.longitude);
         void rasterizeGroundTintTexture(layer.textureUrl, layer.gradientColors, layer.gradientAngleDegrees, GROUND_TINT_TEXTURE_RASTER_PX, GROUND_TINT_TEXTURE_RASTER_PX, layer)
-          .then(async (dataUrl) => {
+          .then((canvas) => {
             if (!isTintEffectActive || !GroundOverlay || !mapRef.current) return;
             console.info('[map][水彩第 2 步] Canvas PNG 已生成', {
               momentId: display.id,
-              sourceKind: dataUrl.startsWith('data:image/png;base64,') ? 'dataURL/png' : 'unexpected',
-              dataUrlLength: dataUrl.length,
+              sourceKind: 'canvas',
               gradientColors: layer.gradientColors,
               gradientAngleDegrees: layer.gradientAngleDegrees,
               bounds,
             });
-            const canvas = await createGroundTintCanvas(dataUrl, GROUND_TINT_TEXTURE_RASTER_PX, GROUND_TINT_TEXTURE_RASTER_PX);
             if (!isTintEffectActive || !mapRef.current) return;
             canvas.style.pointerEvents = 'none';
             const overlay = new GroundOverlay({
@@ -314,7 +311,6 @@ export function MapCanvas({ moments, currentPosition, hiddenMomentId, arrivalMom
               debugMode: Boolean(TINT_DEBUG_COLORS),
               blendMode: 'normal',
             });
-            tintOverlaysRef.current.push(overlay);
           })
           .catch((error: unknown) => console.warn('[map] 水彩地面纹理生成失败，保留其他贴纸功能。', error));
       });
@@ -333,9 +329,47 @@ export function MapCanvas({ moments, currentPosition, hiddenMomentId, arrivalMom
     return () => {
       markersRef.current.forEach((marker) => marker.setMap(null));
       isTintEffectActive = false;
-      tintOverlaysRef.current.forEach((layer) => removeMapLayer(mapRef.current, layer));
     };
   }, [hiddenMomentId, isReady, moments, onSelect, paletteRevision]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    const AMap = AMapRef.current;
+    if (!isReady || !map || !AMap || !GROUND_TINT_ENABLED) return;
+    const GroundOverlay = AMap.CanvasLayer;
+    if (!GroundOverlay) return;
+    const mapMoments = USE_FIXED_LOCATION ? [...moments, ...demoMemoryMoments] : moments;
+    const displays = mapMoments.filter((moment) => moment.id !== hiddenMomentId).map(toMapMomentDisplay);
+    const desired = new Map(displays.map((display) => [display.id, display]));
+    tintOverlaysRef.current.forEach(({ layers }, momentId) => {
+      if (desired.has(momentId)) return;
+      layers.forEach((layer) => removeMapLayer(map, layer));
+      tintOverlaysRef.current.delete(momentId);
+      tintRequestsRef.current.delete(momentId);
+    });
+    desired.forEach((display, momentId) => {
+      const signature = `${display.groundTintColors.join(',')}|${GROUND_TINT_TEXTURE_RASTER_PX}|${GROUND_TINT_TEXTURE_OPACITY}`;
+      if (tintOverlaysRef.current.get(momentId)?.signature === signature || tintRequestsRef.current.get(momentId) === signature) return;
+      tintOverlaysRef.current.get(momentId)?.layers.forEach((layer) => removeMapLayer(map, layer));
+      tintOverlaysRef.current.delete(momentId);
+      tintRequestsRef.current.set(momentId, signature);
+      const tintLayers = createGroundTintTextureLayers(momentId, display.groundTintColors);
+      void Promise.all(tintLayers.map(async (layer) => {
+        const canvas = await rasterizeGroundTintTexture(layer.textureUrl, layer.gradientColors, layer.gradientAngleDegrees, GROUND_TINT_TEXTURE_RASTER_PX, GROUND_TINT_TEXTURE_RASTER_PX, layer);
+        const center = offsetCoordinateByMeters(display.latitude, display.longitude, layer.offsetXmeters, layer.offsetYmeters);
+        canvas.style.pointerEvents = 'none';
+        return new GroundOverlay({ canvas, bounds: createGroundTintBounds(AMap, center.latitude, center.longitude), opacity: GROUND_TINT_TEXTURE_OPACITY, zIndex: 80, zooms: [2, 20] });
+      })).then((layers) => {
+        if (tintRequestsRef.current.get(momentId) !== signature || !mapRef.current) return;
+        layers.forEach((layer) => addMapLayer(mapRef.current, layer));
+        tintOverlaysRef.current.set(momentId, { signature, layers });
+      }).catch((error: unknown) => console.warn('[map] Watercolor tint generation failed', error));
+    });
+    if (import.meta.env.DEV && !hasStartedTintVisibilityCheck) {
+      hasStartedTintVisibilityCheck = true;
+      void verifyGroundTintVisibility();
+    }
+  }, [hiddenMomentId, isReady, moments, paletteRevision]);
 
   useEffect(() => {
     if (isReady && mapRef.current && currentPosition) mapRef.current.setCenter([currentPosition.longitude, currentPosition.latitude]);

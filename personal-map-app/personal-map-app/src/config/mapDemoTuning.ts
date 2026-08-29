@@ -9,7 +9,7 @@ export const PAPER_TEXTURE_ENABLED = true;
 /** 是否启用高德底图 CSS 滤镜；关闭可减少底图的滤镜合成。 */
 export const MAP_FILTER_ENABLED = true;
 /** 是否生成并显示 Moment 周围的水彩 CanvasLayer；关闭可跳过水彩纹理生成与图层绘制。 */
-export const GROUND_TINT_ENABLED =false;
+export const GROUND_TINT_ENABLED = true;
 /** 是否显示并持续绘制蝴蝶等世界元素；关闭可停止 CustomLayer 的逐帧动画。 */
 export const WORLD_ELEMENTS_ENABLED = true;
 // ──────────────────────────────────────────────────────
@@ -69,22 +69,27 @@ export const WORLD_ELEMENT_TUNING = {
 
 
 // ──────────────────── demo贴纸 ────────────────────
-/**
- * 地图演示贴纸。图片都放在 public/demo-memories；新增时仅填经纬度与文件名即可。
- * 坐标全部为 GCJ-02，且地图仅使用它们作为展示坐标。
- */
+export interface DemoMemoryStickerConfig {
+  latitude: number; longitude: number; image: string; photo?: string; createdAt?: string; text?: string; city?: string; district?: string; placeName?: string;
+}
 export const DEMO_MEMORY_STICKERS = [
-  { latitude: 40.0025153, longitude: 116.3900000, image: 'demo-memory-001-sticker.png' },
-  { latitude: 40.0026838, longitude: 116.3929397, image: 'demo-memory-002-sticker.png' },
-  { latitude: 40.0004126, longitude: 116.3938321, image: 'demo-memory-003-sticker.png' },
-  { latitude: 39.9972900, longitude: 116.3945279, image: 'demo-memory-004-sticker.png' },
-  { latitude: 39.9976644, longitude: 116.3900000, image: 'demo-memory-005-sticker.png' },
-  { latitude: 39.9970410, longitude: 116.3867588, image: 'demo-memory-006-sticker.png' },
-  { latitude: 39.9996714, longitude: 116.3859182, image: 'demo-memory-007-sticker.png' },
-  { latitude: 40.0030026, longitude: 116.3853288, image: 'demo-memory-008-sticker.png' },
-  { latitude: 40.0048116, longitude: 116.3922861, image: 'demo-memory-009-sticker.png' },
-  { latitude: 39.9950859, longitude: 116.3925918, image: 'demo-memory-010-sticker.png' },
-] as const;
+  { latitude: 40.0025153, longitude: 116.3900000, image: 'demo-memory-001-sticker.png', photo: 'demo-memory-001-photo.jpg', createdAt: '2026-02-13T05:40:50.000Z', text: '外卖竟然也有无人车' },
+  { latitude: 40.0026838, longitude: 116.3929397, image: 'demo-memory-002-sticker.png', photo: 'demo-memory-002-sticker.png', createdAt: '2026-01-10T17:07:01.000Z', text: '抽到了黑色的佛小伴，丑萌丑萌的' },
+  { latitude: 40.0004126, longitude: 116.3938321, image: 'demo-memory-003-sticker.png', photo: 'demo-memory-003-photo.jpg', createdAt: '2026-04-17T19:27:32.000Z', text: '老远就听到了小火车的声音！太诱人了，坐在上面都很凉爽' },
+  { latitude: 39.9972900, longitude: 116.3945279, image: 'demo-memory-004-sticker.png', photo: 'demo-memory-004-sticker.png', createdAt: '2026-04-06T02:33:27.000Z', text: '巨大的花' },
+  { latitude: 39.9976644, longitude: 116.3900000, image: 'demo-memory-005-sticker.png', photo: 'demo-memory-005-photo.jpg', createdAt: '2026-03-28T16:28:29.000Z', text: '这个狗狗毛好长' },
+  { latitude: 39.9970410, longitude: 116.3867588, image: 'demo-memory-006-sticker.png', photo: 'demo-memory-006-sticker.jpg', createdAt: '2026-02-24T04:35:15.000Z', text: '下次还来' },
+  { latitude: 39.9996714, longitude: 116.3859182, image: 'demo-memory-007-sticker.png', photo: 'demo-memory-007-photo.jpg', createdAt: '2026-02-09T19:19:27.000Z', text: '在公园摸鱼，阳光好，心情也好' },
+  { latitude: 40.0030026, longitude: 116.3853288, image: 'demo-memory-008-sticker.png', photo: 'demo-memory-008-sticker.png', createdAt: '2026-07-31T19:11:04.000Z', text: '可爱，不知道要织多久' },
+  { latitude: 40.0048116, longitude: 116.3922861, image: 'demo-memory-009-sticker.png', photo: 'demo-memory-009-sticker.png', createdAt: '2026-02-03T18:19:43.000Z', text: '他俩快睡着了，今天也太悠哉游哉了~~' },
+  { latitude: 39.9950859, longitude: 116.3925918, image: 'demo-memory-010-sticker.png', photo: 'demo-memory-010-photo.jpg', createdAt: '2026-08-18T07:47:20.000Z', text: '凹凸镜，好干净' },
+  // { latitude: 39.9992192, longitude: 116.3852980, image: 'demo-memory-011-sticker.png', photo: 'demo-memory-011-photo.jpg', createdAt: '2026-03-26T21:51:13.000Z', text: '踏雪！' },
+  // { latitude: 39.9973266, longitude: 116.3910202, image: 'demo-memory-012-sticker.png', photo: 'demo-memory-012-photo.jpg', createdAt: '2026-08-06T23:10:59.000Z', text: '可爱的盘子' },
+  // { latitude: 39.9969884, longitude: 116.3914988, image: 'demo-memory-013-sticker.png', photo: 'demo-memory-013-photo.jpg', createdAt: '2026-07-31T15:13:21.000Z', text: '自己调酒，美滋滋' },
+  // { latitude: 39.9991952, longitude: 116.3894921, image: 'demo-memory-014-sticker.png', photo: 'demo-memory-014-photo.jpg', createdAt: '2026-04-19T00:55:31.000Z', text: '。。。' },
+  // { latitude: 40.0030943, longitude: 116.3850650, image: 'demo-memory-015-sticker.png', photo: 'demo-memory-015-photo.jpg', createdAt: '2026-03-04T00:07:57.000Z', text: '学校的冰激淋，一般' },
+  // { latitude: 40.0019814, longitude: 116.3884025, image: 'demo-memory-016-sticker.png', photo: 'demo-memory-016-photo.jpg', createdAt: '2026-03-02T09:10:26.000Z', text: '蝴蝶一样的小草！' },
+] as const satisfies readonly DemoMemoryStickerConfig[];
 
 /** 地图上每张 Moment 贴纸的显示区边长。 */
 export const MAP_STICKER_DISPLAY_PX = 160;
@@ -139,6 +144,8 @@ export const GROUND_TINT_TEXTURE_OPACITY = 0.5;
  * 只影响纹理明暗，不改变 PNG 的透明 alpha 形状；默认 0.1。
  */
 export const GROUND_TINT_TEXTURE_CONTRAST = 0.35;
+/** 水彩固定色库；照片主色只用于匹配其中最接近的一组。 */
+export const TINT_COLOR_LIBRARY = ['#FF7575', '#FB9674', '#FFC67B', '#FBDA74', '#FFF67B', '#DAFB74', '#AEFF7B', '#74FBA1', '#7BFFFD', '#74DAFB', '#7BB9FF', '#7474FB', '#9E7BFF', '#F47BFF', '#FB74CE'] as const;
 /** 纹理最暗处保留的基础明度比例；0.55 表示深部仍是同色相的深色，不会变成灰黑。 */
 export const GROUND_TINT_DARK_LIGHTNESS_RATIO = 0.55;
 /** 水彩边缘向内平滑过渡的宽度（像素）。 */
@@ -155,7 +162,7 @@ export const GROUND_TINT_GRADIENT_ANGLE_MAX_DEG = 360;
  * 水彩染色三色调试开关：非 null 时，所有贴纸都使用此粉→黄→蓝渐变，仍保留 2–3 层叠加。
  * 验收后改成 null 即恢复每张照片自身的调色板。
  */
-export const TINT_DEBUG_COLORS: readonly [string, string, string] | null = ['#F291B1', '#F9DE7A', '#7FCFF7'];
+export const TINT_DEBUG_COLORS: readonly [string, string, string] | null = null;
 /** 照片主色的饱和度保留比例；较低会更像淡水彩。 */
 export const GROUND_TINT_SATURATION_RATIO = 0.45;
 /** 照片主色转换后的目标明度。 */
