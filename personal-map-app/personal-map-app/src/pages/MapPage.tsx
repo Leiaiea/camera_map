@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { lazy, Suspense, useCallback, useMemo, useState } from 'react';
 import type { Moment } from '../models/moment';
 import type { InteractionDefinition } from '../interactions/types';
 import { MapCanvas } from '../features/map/MapCanvas';
@@ -9,6 +9,10 @@ import { MomentDetailSheet } from '../features/moment/MomentDetailSheet';
 import { InteractionArrivalStage } from '../features/record/InteractionArrivalStage';
 import type { GeoCoordinate } from '../services/location/types';
 import { WORLD_ELEMENTS_ENABLED } from '../config/mapDemoTuning';
+
+const DevArrivalDebugTools = import.meta.env.DEV
+  ? lazy(() => import('../features/map/ArrivalDebugTools').then(({ ArrivalDebugTools }) => ({ default: ArrivalDebugTools })))
+  : undefined;
 
 interface MapPageProps {
   onAdd: () => void;
@@ -79,6 +83,7 @@ export function MapPage({ onAdd, onCapture, arriving, onArrivalComplete, isActiv
         <button className="map-primary-action map-capture-action" type="button" onClick={onCapture} aria-label="拍摄"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Z" /><circle cx="12" cy="14" r="3.5" /></svg></button>
         <button className="map-primary-action map-archive-action" type="button" aria-label="归档（暂未开放）" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z" /><path d="M5 8h14M9 4v4M9 13h6M9 17h4" /></svg></button>
       </nav>
+      {DevArrivalDebugTools && <Suspense fallback={null}><DevArrivalDebugTools /></Suspense>}
       {detailMoment && <MomentDetailSheet moment={detailMoment} onClose={() => selectMoment()} onDelete={() => deleteMoment(detailMoment.id)} />}
       {arriving && <InteractionArrivalStage interaction={arriving.interaction} moment={arriving.moment} target={arrivalTarget?.momentId === arriving.moment.id ? arrivalTarget : undefined} onComplete={onArrivalComplete} />}
     </main>

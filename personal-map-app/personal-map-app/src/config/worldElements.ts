@@ -15,7 +15,7 @@ export interface WorldElementSpec {
 export const WORLD_ELEMENTS: readonly WorldElementSpec[] = [
   {
     id: 'butterfly',
-    asset: '/world/butterfly.webp',
+    asset: '/world/butterfly-wing-left.png',
     behavior: 'roam',
   },
 ];

@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { emptyCaptureDraft, hasCaptureContent, type CaptureDraft } from '../../models/moment';
 import { discardStickerPhotoTask, fileToObjectUrl, releaseDraftResources, releaseObjectUrl, stageStickerPhotoTask, startAudioRecording, startStickerPhotoTask, type AudioRecorder } from '../../services/media/mediaService';
 import { useStickerGeneration } from '../stickerGeneration/StickerGenerationProvider';
+import { getRandomInteractionType } from '../../interactions/registry';
 
 export function useCaptureDraft(initialDraft?: CaptureDraft) {
   const { stickerGenerationEnabled } = useStickerGeneration();
-  const [draft, setDraft] = useState<CaptureDraft>(() => initialDraft ?? emptyCaptureDraft());
+  const [draft, setDraft] = useState<CaptureDraft>(() => initialDraft ?? emptyCaptureDraft(getRandomInteractionType()));
   const [isRecording, setIsRecording] = useState(false);
   const [recordingError, setRecordingError] = useState<string>();
   const [audioPreviewUrl, setAudioPreviewUrl] = useState<string | undefined>(() => initialDraft?.audio ? URL.createObjectURL(initialDraft.audio.blob) : undefined);

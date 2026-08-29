@@ -9,9 +9,9 @@ export const PAPER_TEXTURE_ENABLED = true;
 /** 是否启用高德底图 CSS 滤镜；关闭可减少底图的滤镜合成。 */
 export const MAP_FILTER_ENABLED = true;
 /** 是否生成并显示 Moment 周围的水彩 CanvasLayer；关闭可跳过水彩纹理生成与图层绘制。 */
-export const GROUND_TINT_ENABLED = false;
+export const GROUND_TINT_ENABLED =false;
 /** 是否显示并持续绘制蝴蝶等世界元素；关闭可停止 CustomLayer 的逐帧动画。 */
-export const WORLD_ELEMENTS_ENABLED = false;
+export const WORLD_ELEMENTS_ENABLED = true;
 // ──────────────────────────────────────────────────────
 
 /** demo 阶段固定位置（GCJ-02）；演示结束后设为 false 恢复真实定位。 */
@@ -52,7 +52,7 @@ export const WORLD_ELEMENT_SPAWN_RADIUS_METERS = 120; // 出生点相对选中�
 export const WORLD_ELEMENT_HEADING_OFFSET_DEG = 90; // 蝴蝶头部朝上素材对齐路径切线的补偿角（度）
 /** 世界元素演示随机种子；固定后每次打开页面的出生点和环路形态保持一致。 */
 export const WORLD_ELEMENT_RANDOM_SEED = 'world-elements-demo-v1'; // 固定出生点与飞行环路形态的演示随机种子
-export const WORLD_ELEMENT_DWELL_MS = 3000; // 蝴蝶抵达每个航点后的停驻时长（毫秒）
+export const WORLD_ELEMENT_DWELL_MS = 300; // 仅保留起步的轻微停顿
 export const WORLD_ELEMENT_WAYPOINT_MIN_SPACING_METERS = 40; // 任意两个蝴蝶航点之间的最小间距（米）
 export const WORLD_ELEMENT_WAYPOINT_MAX_ATTEMPTS = 20; // 生成满足形状约束的航点时最多重试次数
 export const WORLD_ELEMENT_MOVE_SAMPLE_SPACING_METERS = 2; // moveAlong 航线的目标采样间距（米）
