@@ -1,0 +1,182 @@
+.map-page{background:#edf0e9}
+.map-page:before{content:"";position:absolute;z-index:10;left:0;right:0;top:0;height:150px;pointer-events:none;background:linear-gradient(180deg,#fff 0%,#fffffff0 42%,#ffffff00 100%)}
+/* 地图底色与网格现在铺在视口上（世界尺寸已由投影决定，不再是固定像素画布）。 */
+.map-viewport{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab;background:linear-gradient(145deg,#faf9f2,#e9ede5)}
+.map-viewport:active{cursor:grabbing}
+.map-viewport:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#69766a0b 1px,transparent 1px),linear-gradient(90deg,#69766a0b 1px,transparent 1px);background-size:42px 42px;pointer-events:none}
+/* 装饰层锚定在真实经纬度上，整层随相机平移缩放；接入高德后整层删除。 */
+.map-decor{position:absolute;width:0;height:0;transform-origin:0 0;pointer-events:none}
+.map-water{position:absolute;border-radius:50%;background:#bfdddd}
+.water-a{left:-820px;top:180px;width:1420px;height:72px;transform:rotate(-14deg)}
+.water-b{left:230px;top:-620px;width:62px;height:1160px;transform:rotate(13deg)}
+.map-road-grid{position:absolute;border:18px solid #fffdf8;border-radius:50%;background:#d7d9d1;box-shadow:inset 0 0 0 2px #ced0c8}
+.road-a{left:-900px;top:-330px;width:1360px;height:480px;transform:rotate(16deg)}
+.road-b{left:-140px;top:-30px;width:970px;height:300px;transform:rotate(68deg)}
+.road-c{left:-640px;top:430px;width:1000px;height:240px;transform:rotate(-18deg)}
+.map-district{position:absolute;z-index:3;color:#aeb6ab;font-size:30px;font-weight:700;letter-spacing:.18em}
+.district-a{left:-560px;top:-190px}
+.district-b{left:250px;top:270px}
+.district-c{left:-540px;top:590px;font-size:20px}
+/* 当前位置圆点 */
+.current-position{position:absolute;z-index:18;width:0;height:0;pointer-events:none}
+.current-position i{position:absolute;left:-8px;top:-8px;width:16px;height:16px;border:3px solid #fff;border-radius:50%;background:var(--green);box-shadow:0 2px 8px #2d453b66}
+.current-position b{position:absolute;left:-21px;top:-21px;width:42px;height:42px;border-radius:50%;background:#5282644d;animation:herePulse 2.4s ease-out infinite}
+@keyframes herePulse{0%{transform:scale(.5);opacity:.7}70%{transform:scale(1.25);opacity:0}100%{opacity:0}}
+/* 比例尺，便于确认投影与距离感 */
+.map-scale{position:absolute;z-index:20;left:22px;bottom:calc(126px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:6px;color:#6d766c;font:10px "DM Mono",monospace}
+.map-scale i{display:block;width:80px;height:6px;border:1px solid #6d766c;border-top:0}
+.moment-marker{position:absolute;width:112px;height:112px;padding:7px;border:0;border-radius:50% 50% 50% 12px;background:#fff;box-shadow:0 12px 24px #44524855;transform:translate(-50%,-100%) rotate(-8deg);overflow:hidden}
+.moment-marker img{width:100%;height:100%;border-radius:50% 50% 50% 9px;object-fit:cover}
+.moment-marker span{position:absolute;left:50%;bottom:9px;transform:translateX(-50%);padding:3px 7px;border-radius:10px;color:#fff;background:#2b4338cc;font-size:10px;white-space:nowrap}
+.moment-marker.is-example{outline:3px dashed var(--yellow);outline-offset:5px}
+.guide-hero>span{color:#718079;font:10px ui-monospace,monospace;letter-spacing:.14em}
+.location-banner{position:absolute;z-index:19;left:22px;right:22px;top:106px;padding:10px 13px;border-radius:14px;display:flex;gap:8px;align-items:center;background:#ffffffbf;box-shadow:0 7px 20px #3c4a4122;backdrop-filter:blur(14px);font-size:12px}
+.location-banner{top:110px;color:#725a35;background:#ffffffbf}
+.add-moment-button{position:absolute;z-index:21;left:50%;bottom:calc(45px + var(--safe-bottom));transform:translateX(-50%);height:58px;padding:0 22px 0 8px;border:0;border-radius:31px;display:flex;align-items:center;gap:11px;color:#f7f5ed;background:var(--green-dark);box-shadow:0 12px 28px #2d453b55}
+.add-moment-button i{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;color:var(--green-dark);background:var(--yellow);font-size:25px;font-style:normal}
+.add-moment-button span{font-weight:700}
+.map-zoom-controls{position:absolute;z-index:20;right:18px;bottom:150px;display:grid;overflow:hidden;border-radius:15px;box-shadow:0 7px 20px #38433c33}
+.map-zoom-controls button{width:43px;height:42px;border:1px solid #ffffffa8;background:#ffffffb8;backdrop-filter:blur(14px);font-size:23px}
+.map-zoom-controls button+button{border-top:1px solid #d7dbd4}
+.sheet-backdrop{position:absolute;z-index:50;inset:0;background:#ffffff26;backdrop-filter:blur(4px);display:flex;align-items:flex-end}
+.moment-sheet{width:100%;max-height:82%;overflow:auto;padding:10px 22px calc(24px + var(--safe-bottom));border-radius:27px 27px 0 0;background:#ffffffdc;backdrop-filter:blur(18px);box-shadow:0 -14px 38px #26332a2b;animation:sheetUp .36s cubic-bezier(.2,.75,.2,1)}
+.sheet-handle{width:42px;height:5px;margin:0 auto 15px;border-radius:4px;background:#c8cdc6}
+.moment-sheet header{display:flex;justify-content:space-between;align-items:flex-start}
+.moment-sheet header span{color:#778078;font-size:11px}
+.moment-sheet h2{margin:4px 0 14px;font-size:24px}
+.moment-sheet header button{width:38px;height:38px;border:0;border-radius:50%;background:#eceee8;font-size:24px}
+.moment-detail-photo,.moment-video{width:100%;height:230px;border-radius:18px;object-fit:cover}
+.moment-audio{width:100%;margin:14px 0}
+.moment-text{padding:13px 15px;border-radius:14px;background:#f0f1eb;line-height:1.65}
+.moment-meta{margin:16px 0;display:grid;gap:8px}
+.moment-meta div{display:flex;justify-content:space-between;gap:20px;font-size:12px}
+.moment-meta dt{color:#8a928b}
+.moment-meta dd{margin:0;text-align:right}
+.delete-button{width:100%;padding:13px;border:1px solid #e2b5ac;border-radius:14px;color:#b14f3f;background:#fff7f5}
+.example-note{color:#8b908a;font-size:11px;text-align:center}
+.simple-topbar{position:absolute;z-index:20;left:0;right:0;top:0;padding:calc(18px + env(safe-area-inset-top)) 20px 12px;display:grid;grid-template-columns:40px 1fr 40px;align-items:center;text-align:center}
+.simple-topbar button{width:38px;height:38px;border:1px solid #ffffff9c;border-radius:50%;background:#ffffffa8;backdrop-filter:blur(12px);font-size:21px}
+.simple-topbar>span{font-size:13px;font-weight:700}
+.guide-page{padding:96px 24px 120px;background:linear-gradient(145deg,#ffffffef,#eef2efdc)}
+.guide-hero h1{max-width:330px;margin:12px 0 17px;font-size:34px;line-height:1.26;letter-spacing:-.04em}
+.guide-hero p{max-width:340px;margin:0;color:var(--ink-soft);font-size:14px;line-height:1.8}
+.suggestion-list{margin-top:35px;display:grid;gap:13px}
+.suggestion-list article{min-height:76px;padding:15px;display:grid;grid-template-columns:35px 1fr auto;align-items:center;gap:8px;border-radius:17px;background:#ffffffbd;backdrop-filter:blur(14px);box-shadow:0 8px 24px #43504718}
+.suggestion-list i{color:#7f8a82;font:11px ui-monospace,monospace}
+.suggestion-list p{margin:0;font-size:14px;line-height:1.55}
+.suggestion-list span{color:var(--coral);font-size:20px}
+.primary-bottom-button{position:absolute;left:24px;right:24px;bottom:calc(24px + var(--safe-bottom));height:58px;border:0;border-radius:29px;color:#fff;background:var(--green-dark);font-weight:700}
+.primary-bottom-button span{margin-left:8px;font-size:18px}
+.capture-page{color:#fff;background:#19241f}
+.capture-topbar{color:#fff}
+.capture-topbar button{color:#fff;background:#fff2}
+.capture-preview{position:absolute;left:0;right:0;top:0;height:57%;overflow:hidden}
+.capture-preview>img{width:100%;height:100%;object-fit:cover;filter:brightness(.77)}
+.capture-focus{position:absolute;left:50%;top:49%;width:205px;height:300px;transform:translate(-50%,-50%);border:1px solid #fff9;border-radius:8px}
+.capture-focus:before,.capture-focus:after{content:"";position:absolute;width:24px;height:24px;border-color:var(--yellow);border-style:solid}
+.capture-focus:before{left:-3px;top:-3px;border-width:3px 0 0 3px}
+.capture-focus:after{right:-3px;bottom:-3px;border-width:0 3px 3px 0}
+.capture-focus span{position:absolute;left:50%;top:-5px;width:10px;height:10px;border-radius:50%;background:var(--yellow)}
+.capture-focus b{position:absolute;left:50%;bottom:-30px;transform:translateX(-50%);width:max-content;font-size:11px}
+.live-badge{position:absolute;right:18px;top:84px;padding:5px 8px;border-radius:10px;background:#dc5a4e;font-size:10px}
+.capture-panel{position:absolute;z-index:12;left:0;right:0;bottom:0;height:48%;padding:24px 20px calc(18px + var(--safe-bottom));border-radius:28px 28px 0 0;background:#f7f4ec;color:var(--ink);overflow:auto}
+.media-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.media-actions label,.media-actions button{min-height:68px;padding:8px;border:0;border-radius:16px;display:grid;place-items:center;gap:3px;background:#e9ede7;font-size:11px}
+.media-actions input{position:absolute;width:1px;height:1px;opacity:0}
+.media-actions i{font-style:normal;font-size:14px;font-weight:700}
+.media-actions button.is-recording{color:#fff;background:#d65d50;animation:recordPulse 1s infinite}
+.capture-panel audio{width:100%;height:35px;margin-top:10px}
+.capture-error{margin:8px 0;color:#b94f41;font-size:11px}
+.capture-panel textarea{width:100%;height:76px;margin-top:12px;padding:12px;border:1px solid #d6dbd3;border-radius:14px;resize:none;background:#fffdf8;outline:none}
+.capture-confirm-actions{margin-top:12px;display:grid;grid-template-columns:.8fr 1.2fr;gap:10px}
+.capture-confirm-actions button{height:48px;border:0;border-radius:16px;background:#e7e9e3}
+.capture-confirm-actions button:last-child{color:#fff;background:var(--green-dark);font-weight:700}
+.transition-page{background:#b69a78}
+@keyframes sheetUp{from{transform:translateY(100%)}
+}
+@keyframes recordPulse{50%{filter:brightness(1.15);transform:scale(.98)}
+}
+@media(max-height:720px){.guide-page{padding-top:78px}
+.guide-hero h1{font-size:29px}
+.suggestion-list{margin-top:20px}
+.suggestion-list article{min-height:65px}
+.capture-panel{height:51%}
+}
+/* 与 photo-map-explorations02 共用同一套视觉语法：衬线标题、等宽标注、直角卡片和错位色块。 */
+.guide-hero>span{font-family:"DM Mono",monospace}
+.guide-hero h1,.moment-sheet h2{font-family:"Noto Serif SC",serif}
+.simple-topbar button,.moment-sheet header button{width:36px;height:36px;border:1px solid #ffffff9c;border-radius:50%;background:#ffffffa8;backdrop-filter:blur(12px)}
+.location-banner{left:25px;right:25px;border-radius:4px;box-shadow:0 8px 20px #3c4a4122;backdrop-filter:blur(14px)}
+.add-moment-button{height:54px;bottom:calc(35px + var(--safe-bottom));padding:0 18px 0 8px;border-radius:4px;box-shadow:7px 7px 0 var(--yellow)}
+.add-moment-button i{width:36px;height:36px;border-radius:50%}
+.map-zoom-controls{border-radius:4px}
+.guide-page{padding:calc(87px + env(safe-area-inset-top)) 25px 120px;background:linear-gradient(145deg,#ffffffef,#eef2efdc)}
+.guide-hero h1{margin:13px 0 17px;font-size:36px;letter-spacing:-.08em}
+.guide-hero p{font:15px/1.75 "Noto Serif SC",serif}
+.suggestion-list{gap:16px}
+.suggestion-list article{min-height:76px;padding:16px 14px;border:1px solid #ffffffa8;border-radius:4px;color:var(--ink);background:#ffffffb8;box-shadow:0 8px 20px #3c4a4122;backdrop-filter:blur(14px)}
+.suggestion-list i{color:#7f8a82;font-family:"DM Mono",monospace}
+.suggestion-list p{font:600 15px/1.5 "Noto Serif SC",serif}
+.primary-bottom-button{left:25px;right:25px;height:54px;border-radius:4px;color:#f9f5ea;background:#26382e;box-shadow:7px 7px 0 var(--yellow);font-family:"Noto Serif SC",serif}
+.capture-page{background:#1f2823}
+.capture-focus{border-radius:4px}
+.capture-focus b{border-radius:3px;background:#1d2520cc;font-family:"Noto Serif SC",serif}
+.capture-panel{border-radius:0;padding-left:20px;padding-right:20px;background:#f4f2eb}
+.media-actions label,.media-actions button,.capture-panel textarea,.capture-confirm-actions button{border-radius:4px}
+.media-actions label,.media-actions button{background:#e4e7df}
+.capture-panel textarea{background:#fbfaf6}
+.capture-confirm-actions button:last-child{background:#26382e;box-shadow:5px 5px 0 var(--yellow);font-family:"Noto Serif SC",serif}
+.moment-sheet{border-radius:0;padding-left:25px;padding-right:25px;background:#ffffffdc}
+.moment-detail-photo,.moment-video,.moment-text,.delete-button{border-radius:4px}
+.moment-text{font-family:"Noto Serif SC",serif}
+.delete-button{box-shadow:5px 5px 0 #e2b5ac}
+.moment-meta dt,.example-note{font-family:"DM Mono",monospace}
+.moment-meta dd small{display:block;margin-top:2px;color:#8b938a;font:10px "DM Mono",monospace}
+/* 第一阶段验收：全屏地图、Arrival 交接与互动选择。 */
+.location-banner{top:calc(18px + env(safe-area-inset-top))}
+/* 启动定位反馈与当前位置名称 */
+.locating-banner,.here-banner{position:absolute;z-index:19;left:25px;top:calc(18px + env(safe-area-inset-top));padding:9px 13px;border:1px solid #ffffffa8;border-radius:4px;background:#ffffffb8;box-shadow:0 8px 20px #3c4a4122;backdrop-filter:blur(14px);font-size:12px}
+.locating-banner{color:#5f6b60;font-family:"DM Mono",monospace}
+.here-banner{display:flex;align-items:baseline;gap:8px}
+.here-banner b{font:600 13px "Noto Serif SC",serif}
+.here-banner span{color:#7d857b;font:10px "DM Mono",monospace}
+.location-banner{top:calc(64px + env(safe-area-inset-top))}
+.recenter-button{border-top:1px solid #d7dbd4}
+.map-zoom-controls button:disabled{color:#b9beb6}
+/* 采集页确认按钮的定位中状态 */
+.capture-confirm-actions button:disabled{opacity:.55}
+.moment-marker.is-arriving{visibility:hidden}
+.default-sticker{width:100%;height:100%;display:grid;place-items:center;border-radius:50% 50% 50% 9px;color:#fff;background:linear-gradient(145deg,#7fa39a,#314d43);font-size:32px}
+.map-zoom-controls{bottom:calc(118px + env(safe-area-inset-bottom))}
+.map-side-actions{position:absolute;z-index:20;right:18px;top:calc(18px + env(safe-area-inset-top));display:grid;gap:9px}
+.map-side-actions button{width:40px;height:40px;border:1px solid #ffffffb0;border-radius:50%;color:#34483e;background:#ffffffb8;box-shadow:0 7px 18px #3c4a4122;backdrop-filter:blur(14px);font-size:21px;line-height:1}
+.capture-topbar{grid-template-columns:40px 1fr auto}
+.capture-topbar .interaction-choice{width:auto;height:34px;padding:0 9px;border-radius:3px;color:#fff;background:#1b251fcc;font:10px "DM Mono",monospace;white-space:nowrap}
+.moment-audio-wrap{margin:14px 0;padding:10px 12px;background:#eceee7}
+.moment-audio-wrap .moment-audio{margin:0;width:100%}
+.moment-audio-wrap span{display:block;margin-top:5px;color:#727b73;font:10px "DM Mono",monospace}
+.picker-backdrop{position:absolute;z-index:70;inset:0;display:flex;align-items:flex-end;background:#ffffff26;backdrop-filter:blur(4px)}
+.interaction-picker{width:100%;padding:10px 20px calc(22px + var(--safe-bottom));border-radius:24px 24px 0 0;background:#ffffffdc;backdrop-filter:blur(18px);box-shadow:0 -14px 38px #26332a2b}
+.interaction-picker header{display:flex;align-items:center;justify-content:space-between}
+.interaction-picker h2{margin:0 0 14px;font:600 21px "Noto Serif SC",serif}
+.interaction-picker header button{width:36px;height:36px;border:1px solid #ffffff9c;border-radius:50%;background:#ffffffa8;backdrop-filter:blur(12px);font-size:22px}
+.interaction-options{display:grid;gap:10px}
+.interaction-options>button{width:100%;min-height:72px;padding:10px;border:1px solid transparent;display:grid;grid-template-columns:48px 1fr 24px;align-items:center;gap:10px;text-align:left;background:#fbfaf6}
+.interaction-options>button.is-selected{border-color:#526f62;box-shadow:5px 5px 0 var(--yellow)}
+.interaction-options i{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;color:#fff;font-style:normal;font-size:21px}
+.interaction-options span{display:grid;gap:4px}
+.interaction-options b{font:600 15px "Noto Serif SC",serif}
+.interaction-options small{color:#737b73;font-size:11px}
+.interaction-options em{font-style:normal;color:#526f62}
+.capture-audio{margin-top:10px;padding:7px;background:#e5e8e0}
+.capture-audio audio{margin:0;width:100%}
+.capture-audio span{display:block;margin-top:3px;color:#6d766e;font:10px "DM Mono",monospace}
+.record-saving-overlay,.record-error-overlay{position:absolute;z-index:80;inset:0;display:grid;place-items:end center;padding-bottom:calc(29px + env(safe-area-inset-bottom));background:#1114}.record-saving-overlay span{min-height:50px;padding:0 20px;display:grid;place-items:center;border-radius:27px;color:#34483e;background:#f2d579;font:600 14px "Noto Serif SC",serif}.record-error-overlay{place-items:center;padding:24px;background:#18221dcc}.record-error-overlay>section{width:min(100%,320px);padding:20px;color:#26382e;background:#f4f2eb;box-shadow:7px 7px 0 var(--yellow)}.record-error-overlay p{margin:0 0 16px;font:14px/1.6 "Noto Serif SC",serif}.record-error-overlay section div{display:grid;grid-template-columns:1fr 1fr;gap:10px}.record-error-overlay button{height:44px;border:0;background:#e3e6de}.record-error-overlay button:last-child{color:#fff;background:#26382e}
+/* 真实相机取景层：全屏预览 + 快门，取消时由组件卸载释放摄像头 */
+.camera-capture-overlay{position:fixed;z-index:90;inset:0;background:#000}
+.camera-capture-video{width:100%;height:100%;object-fit:cover}
+.camera-capture-close{position:absolute;top:calc(18px + env(safe-area-inset-top));left:18px;width:38px;height:38px;border:0;border-radius:50%;color:#fff;background:#0000004d;font-size:20px}
+.camera-capture-actions{position:absolute;left:0;right:0;bottom:calc(32px + env(safe-area-inset-bottom));display:flex;justify-content:center}
+.camera-capture-shutter{width:70px;height:70px;border:4px solid #fff;border-radius:50%;background:#ffffff4d}
+.camera-capture-shutter:disabled{opacity:.5}
+.camera-fallback-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
